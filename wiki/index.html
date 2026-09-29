@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visor System Wiki // AstraCube</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@500&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+    <style>
+      :root {
+        --ink: #0b0f1a; --ink-2: #121829; --ink-3: #1a2238; --line: #28314a;
+        --steel: #9aa6b8; --text: #e8ecf3; --lamp: #f2a641; --aurora: #5fd3b5;
+        --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; background: var(--ink); color: var(--text);
+        font: 400 1.0rem/1.6 "Atkinson Hyperlegible", sans-serif; -webkit-font-smoothing: antialiased;
+      }
+      .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 32px; }
+      
+      header { border-bottom: 1px solid var(--line); background: #070a12; padding-block: 16px; }
+      .nav-bar { display: flex; justify-content: space-between; align-items: center; }
+      .wiki-title { font-family: var(--display); font-weight: 700; color: var(--lamp); letter-spacing: 0.08em; text-decoration: none; }
+      .back-home { font-family: var(--mono); font-size: 0.75rem; color: var(--steel); text-decoration: none; }
+      .back-home:hover { color: var(--text); }
+
+      .wiki-hero { padding-block: 48px 32px; }
+      .wiki-hero h1 { font-family: var(--display); font-size: 2.2rem; margin: 0 0 8px 0; letter-spacing: 0.02em; }
+      .label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aurora); }
+      .sub { color: var(--steel); margin: 0; max-width: 60ch; }
+
+      .wiki-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-block: 40px 64px; }
+      .wiki-card {
+        background: var(--ink-2); border: 1px solid var(--line); padding: 32px; border-radius: 4px;
+        text-decoration: none; color: inherit; position: relative; display: grid; gap: 12px;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .wiki-card:hover { border-color: var(--aurora); box-shadow: 0 0 16px rgba(95, 211, 181, 0.15); }
+      .wiki-card h3 { font-family: var(--display); font-size: 1.3rem; margin: 0; color: var(--text); }
+      .wiki-card p { color: var(--steel); font-size: 0.92rem; margin: 0; line-height: 1.5; }
+      .wiki-card .action-tag { font-family: var(--mono); font-size: 0.7rem; color: var(--lamp); margin-top: 8px; text-transform: uppercase; }
+
+      footer { border-top: 1px solid var(--line); padding-block: 24px; color: rgba(154,166,184,0.3); font-family: var(--mono); font-size: 0.68rem; text-align: center; }
+      @media (max-width: 760px) { .wiki-grid { grid-template-columns: 1fr; gap: 16px; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap nav-bar">
+        <a class="wiki-title" href="/wiki/">ASTRACUBE // VISOR_WIKI</a>
+        <a class="back-home" href="/">« RETURN TO SURFACE</a>
+      </div>
+    </header>
+    <main class="wrap">
+      <div class="wiki-hero">
+        <span class="label">Central Database Matrix</span>
+        <h1>Visor System Manual</h1>
+        <p class="sub">Log sheets, chemical equations, material specifications, and blueprint coordinate parameters compiled cleanly from our active alpha testing environments.</p>
+      </div>
+      <div class="wiki-grid">
+        <!-- LINK TO OUR BLOCKS PAGE -->
+        <a class="wiki-card" href="/wiki/blocks.html">
+          <span class="label">DATABASE_LOG_01</span>
+          <h3>Voxel Blocks Registry</h3>
+          <p>Review comprehensive breakdowns of every solid material asset including mining tiers, item weights, blast shields, and resource drops.</p>
+          <span class="action-tag">Open Directory [📊]</span>
+        </a>
+        <!-- PLACEHOLDER FOR BLUEPRINTS -->
+        <div class="wiki-card" style="opacity: 0.5; cursor: not-allowed;">
+          <span class="label">DATABASE_LOG_02 // OFFLINE</span>
+          <h3>Crafting & Assembly Blueprints</h3>
+          <p>Detailed manufacturing schematics tracking required iron plates, wired arrays, solar grids, and engine frame blueprint recipes.</p>
+          <span class="action-tag" style="color: var(--steel);">Compiling Log...</span>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap">AstraCube Public Database Environment · Core Engine Godot 4.3</div>
+    </footer>
+  </body>
+</html>
