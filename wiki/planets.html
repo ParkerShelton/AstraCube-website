@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voxel Blocks Registry // AstraCube Wiki</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@500&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+    <style>
+      :root {
+        --ink: #0b0f1a; --ink-2: #121829; --ink-3: #1a2238; --line: #28314a;
+        --steel: #9aa6b8; --text: #e8ecf3; --lamp: #f2a641; --aurora: #5fd3b5;
+        --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; background: var(--ink); color: var(--text);
+        font: 400 1.0rem/1.6 "Atkinson Hyperlegible", sans-serif; -webkit-font-smoothing: antialiased;
+      }
+      .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 32px; }
+      
+      header { border-bottom: 1px solid var(--line); background: #070a12; padding-block: 16px; }
+      .nav-bar { display: flex; justify-content: space-between; align-items: center; }
+      .wiki-title { font-family: var(--display); font-weight: 700; color: var(--lamp); letter-spacing: 0.08em; text-decoration: none; }
+      .wiki-nav-links { display: flex; gap: 24px; font-family: var(--mono); font-size: 0.75rem; }
+      .wiki-nav-links a { color: var(--steel); text-decoration: none; }
+      .wiki-nav-links a:hover, .wiki-nav-links a.active { color: var(--text); }
+
+      .wiki-hero { padding-block: 48px 24px; border-bottom: 1px solid rgba(40, 49, 74, 0.4); }
+      .wiki-hero h1 { font-family: var(--display); font-size: 2.2rem; margin: 0 0 8px 0; letter-spacing: 0.02em; }
+      .label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aurora); }
+      .sub { color: var(--steel); margin: 0; max-width: 65ch; }
+
+      .block-entry-section { padding-block: 48px; }
+      .block-entry-section + .block-entry-section { border-top: 1px solid var(--line); }
+      .block-profile-grid { display: grid; grid-template-columns: 1fr 1.8fr; gap: 48px; align-items: start; }
+      
+      .block-visual-box { display: grid; gap: 16px; }
+      .block-cube-frame {
+        width: 100%; aspect-ratio: 1 / 1; background: var(--ink-2); border: 1px solid var(--line);
+        border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;
+        box-shadow: inset 0 0 24px rgba(0,0,0,0.4);
+      }
+      .voxel-mock-art { width: 45%; height: 45%; border: 3px solid currentColor; transform: rotate(-15deg) skewX(10deg); }
+      .block-cube-frame .id-badge { position: absolute; bottom: 12px; left: 14px; font-family: var(--mono); font-size: 0.65rem; color: var(--steel); }
+      
+      .block-visual-box h2 { font-family: var(--display); font-size: 1.75rem; color: var(--text); margin: 0; }
+      .block-visual-box p { color: var(--steel); font-size: 0.95rem; margin: 0; line-height: 1.6; }
+
+      .version-stamp {
+        display: inline-block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+        background: rgba(242, 166, 65, 0.1); border: 1px solid rgba(242, 166, 65, 0.25); color: var(--lamp);
+        padding: 2px 8px; border-radius: 2px; align-self: start;
+      }
+
+      .block-specs-ledger { display: grid; gap: 24px; }
+      .specs-group-card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
+      .specs-group-card h3 { font-family: var(--display); font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--lamp); margin: 0 0 16px 0; border-bottom: 1px solid rgba(40,49,74,0.3); padding-bottom: 6px; }
+      
+      .spec-data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; font-family: var(--mono); }
+      .spec-data-table tr { border-bottom: 1px solid rgba(40, 49, 74, 0.25); }
+      .spec-data-table tr:last-child { border-bottom: 0; }
+      .spec-data-table td { padding-block: 8px; vertical-align: top; }
+      .spec-data-table td.property-name { color: var(--steel); width: 40%; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.04em; }
+      .spec-data-table td.property-value { color: var(--text); font-weight: 500; text-align: right; }
+
+      .recipe-matrix-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 12px; }
+      .recipe-card { background: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 20px; }
+      .recipe-card h4 { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aurora); margin: 0 0 12px 0; border-bottom: 1px solid rgba(95, 211, 181, 0.15); padding-bottom: 6px; }
+      .recipe-flow-row { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 0.8rem; padding-block: 6px; border-bottom: 1px dashed rgba(154, 166, 184, 0.15); }
+      .recipe-flow-row:last-child { border-bottom: 0; }
+      .recipe-ingredients { color: var(--steel); }
+      .recipe-result { color: var(--text); font-weight: 500; }
+      .recipe-result.target-highlight { color: var(--lamp); }
+
+      footer { border-top: 1px solid var(--line); padding-block: 24px; color: rgba(154,166,184,0.3); font-family: var(--mono); font-size: 0.68rem; text-align: center; }
+      @media (max-width: 860px) { .block-profile-grid { grid-template-columns: 1fr; gap: 32px; } .recipe-matrix-panel { grid-template-columns: 1fr; gap: 16px; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap nav-bar">
+        <a class="wiki-title" href="/wiki/">ASTRACUBE // VISOR_WIKI</a>
+        <div class="wiki-nav-links">
+          <a class="active" href="/wiki/blocks.html">BLOCKS</a>
+          <a class="back-home" href="/">« EXIT MANUAL</a>
+        </div>
+      </div>
+    </header>
+    <main class="wrap">
+      <div class="wiki-hero">
+        <span class="label">Registry Matrix // Sub-Directory 01</span>
+        <h1>Voxel Blocks Registry</h1>
+        <p class="sub">Comprehensive technical datasheets tracking mining tools, processing recipes, and physical parameters for all materials.</p>
+      </div>
+
+      <!-- ENTRY 01: IRON ORE -->
+      <section class="block-entry-section">
+        <div class="block-profile-grid">
+          <div class="block-visual-box">
+            <div class="block-cube-frame">
+              <div class="voxel-mock-art" style="color: #6e7a8c;"></div>
+              <span class="id-badge">REGISTRY_ID // #0012_FERRUM</span>
+            </div>
+            <h2>Iron Ore Crust</h2>
+            <span class="version-stamp">DEPLOY_TAG // ADDED_V0.12_ALPHA</span>
+            <p>A dense, heavy metallic cluster found inside impact craters. Forms the primary foundation asset for early logistics grids, conveyor channels, and frame plates.</p>
+          </div>
+          <div class="block-specs-ledger">
+            <div class="specs-group-card">
+              <h3>1. Structural Parameters</h3>
+              <table class="spec-data-table">
+                <tr><td class="property-name">Hardness Tier</td><td class="property-value" style="color: var(--aurora);">TIER_02 [REINFORCED]</td></tr>
+                <tr><td class="property-name">Required Tool</td><td class="property-value">Pneumatic Breaker</td></tr>
+                <tr><td class="property-name">Base Mass</td><td class="property-value">7.84 kg / block</td></tr>
+              </table>
+            </div>
+            <div class="recipe-matrix-panel">
+              <div class="recipe-card">
+                <h4>Recipes Used To Build This Item</h4>
+                <div class="recipe-flow-row">
+                  <span class="recipe-ingredients">3x Loose Iron Pebbles</span>
+                  <span class="recipe-result target-highlight">➔ 1x Iron Crust</span>
+                </div>
+              </div>
+              <div class="recipe-card">
+                <h4>Recipes This Item Is Used In</h4>
+                <div class="recipe-flow-row">
+                  <span class="recipe-ingredients">1x Iron Crust (Smelter)</span>
+                  <span class="recipe-result">➔ 3x Refined Iron Plates</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap">AstraCube Public Database Environment · Core Engine Godot 4.3</div>
+    </footer>
+  </body>
+</html>

@@ -13,71 +13,236 @@
         --steel: #9aa6b8; --text: #e8ecf3; --lamp: #f2a641; --aurora: #5fd3b5;
         --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
       }
-      * { box-sizing: border-box; }
+      *, *::before, *::after { 
+        box-sizing: border-box; 
+      }
       body {
         margin: 0; background: var(--ink); color: var(--text);
         font: 400 1.0rem/1.6 "Atkinson Hyperlegible", sans-serif; -webkit-font-smoothing: antialiased;
       }
-      .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 32px; }
       
-      header { border-bottom: 1px solid var(--line); background: #070a12; padding-block: 16px; }
-      .nav-bar { display: flex; justify-content: space-between; align-items: center; }
-      .wiki-title { font-family: var(--display); font-weight: 700; color: var(--lamp); letter-spacing: 0.08em; text-decoration: none; }
-      .back-home { font-family: var(--mono); font-size: 0.75rem; color: var(--steel); text-decoration: none; }
-      .back-home:hover { color: var(--text); }
-
-      .wiki-hero { padding-block: 48px 32px; }
-      .wiki-hero h1 { font-family: var(--display); font-size: 2.2rem; margin: 0 0 8px 0; letter-spacing: 0.02em; }
-      .label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aurora); }
-      .sub { color: var(--steel); margin: 0; max-width: 60ch; }
-
-      .wiki-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-block: 40px 64px; }
-      .wiki-card {
-        background: var(--ink-2); border: 1px solid var(--line); padding: 32px; border-radius: 4px;
-        text-decoration: none; color: inherit; position: relative; display: grid; gap: 12px;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      /* Global Layout Framework Split Column */
+      .wiki-master-frame {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 100vh;
       }
-      .wiki-card:hover { border-color: var(--aurora); box-shadow: 0 0 16px rgba(95, 211, 181, 0.15); }
-      .wiki-card h3 { font-family: var(--display); font-size: 1.3rem; margin: 0; color: var(--text); }
-      .wiki-card p { color: var(--steel); font-size: 0.92rem; margin: 0; line-height: 1.5; }
-      .wiki-card .action-tag { font-family: var(--mono); font-size: 0.7rem; color: var(--lamp); margin-top: 8px; text-transform: uppercase; }
 
-      footer { border-top: 1px solid var(--line); padding-block: 24px; color: rgba(154,166,184,0.3); font-family: var(--mono); font-size: 0.68rem; text-align: center; }
-      @media (max-width: 760px) { .wiki-grid { grid-template-columns: 1fr; gap: 16px; } }
+      /* ---------- STICKY SUBSYSTEM NAVIGATION SIDEBAR ---------- */
+      .wiki-sidebar {
+        background: #070a12;
+        border-right: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        overflow-y: auto;
+      }
+      
+      .sidebar-brand {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--lamp);
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        border-bottom: 2px solid var(--line);
+        padding-bottom: 12px;
+      }
+
+      .sidebar-menu-group { display: flex; flex-direction: column; gap: 8px; }
+      .sidebar-menu-group label {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        color: var(--steel);
+        text-transform: uppercase;
+      }
+      
+      .sidebar-links { display: flex; flex-direction: column; gap: 4px; padding: 0; margin: 0; list-style: none; }
+      .sidebar-links a {
+        display: block;
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--steel);
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 4px;
+        transition: background 0.15s, color 0.15s;
+      }
+      .sidebar-links a:hover { background: var(--ink-3); color: var(--text); }
+      .sidebar-links a.active { background: rgba(95, 211, 181, 0.1); color: var(--aurora); border-left: 2px solid var(--aurora); border-radius: 0 4px 4px 0; }
+
+      .sidebar-footer { margin-top: auto; font-family: var(--mono); font-size: 0.62rem; color: rgba(154,166,184,0.3); }
+
+      /* ---------- CONTENT DISPLAY WORKSPACE ---------- */
+      .wiki-workspace { padding: 40px 48px; max-width: 900px; }
+      
+      /* Top Breadcrumb String */
+      .wiki-breadcrumbs { font-family: var(--mono); font-size: 0.72rem; color: var(--steel); margin-bottom: 24px; display: flex; gap: 8px; }
+      .wiki-breadcrumbs a { color: var(--steel); text-decoration: none; }
+      .wiki-breadcrumbs a:hover { color: var(--text); }
+
+      .wiki-hero h1 { font-family: var(--display); font-size: 2.5rem; margin: 10px 0px 12px 0; letter-spacing: 0.02em; line-height: 1.1; }
+      .label { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aurora); }
+      .lede { color: var(--steel); font-size: 1.15rem; line-height: 1.5; margin-bottom: 40px; }
+
+      /* Hub Console Data Grid Panels */
+      .hub-directory-box { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 32px; }
+      .directory-card {
+        background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 24px;
+        text-decoration: none; color: inherit; display: grid; gap: 8px; transition: border-color 0.15s;
+      }
+      .directory-card:hover { border-color: var(--aurora); }
+      .directory-card h3 { font-family: var(--display); font-size: 1.2rem; margin: 0; color: var(--text); }
+      .directory-card p { color: var(--steel); font-size: 0.9rem; margin: 0; line-height: 1.5; }
+
+      /* Responsive Collapse Scales */
+      @media (max-width: 900px) {
+        .wiki-master-frame { grid-template-columns: 1fr; }
+        .wiki-sidebar { height: auto; position: relative; padding: 24px; }
+        .wiki-workspace { padding: 32px 24px; }
+        .hub-directory-box { grid-template-columns: 1fr; }
+      }
+
+      /* ---------- INDEPENDENT VIEWPORT BUG PANEL LAYER ---------- */
+      .floating-bug-panel-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 100010; /* Keeps it high on top of all page wrappers */
+        
+        /* Hard-coded pixel constraints lock down sizes so text-scaling never warps it */
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        
+        background: #121829 !important;
+        border: 1px solid var(--steel) !important;
+        border-radius: 4px !important;
+        cursor: pointer;
+        
+        /* Centralizes the inner SVG beetle precisely on a fixed axis */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+        transition: border-color 0.12s ease, box-shadow 0.12s ease !important;
+      }
+      
+      .floating-bug-panel-btn:hover {
+        border-color: var(--aurora) !important;
+        box-shadow: 0 0 12px rgba(95, 211, 181, 0.3) !important;
+      }
+
     </style>
   </head>
   <body>
-    <header>
-      <div class="wrap nav-bar">
-        <a class="wiki-title" href="/wiki/">ASTRACUBE // VISOR_WIKI</a>
-        <a class="back-home" href="/">« RETURN TO SURFACE</a>
-      </div>
-    </header>
-    <main class="wrap">
-      <div class="wiki-hero">
-        <span class="label">Central Database Matrix</span>
-        <h1>Visor System Manual</h1>
-        <p class="sub">Log sheets, chemical equations, material specifications, and blueprint coordinate parameters compiled cleanly from our active alpha testing environments.</p>
-      </div>
-      <div class="wiki-grid">
-        <!-- LINK TO OUR BLOCKS PAGE -->
-        <a class="wiki-card" href="/wiki/blocks.html">
-          <span class="label">DATABASE_LOG_01</span>
-          <h3>Voxel Blocks Registry</h3>
-          <p>Review comprehensive breakdowns of every solid material asset including mining tiers, item weights, blast shields, and resource drops.</p>
-          <span class="action-tag">Open Directory [📊]</span>
-        </a>
-        <!-- PLACEHOLDER FOR BLUEPRINTS -->
-        <div class="wiki-card" style="opacity: 0.5; cursor: not-allowed;">
-          <span class="label">DATABASE_LOG_02 // OFFLINE</span>
-          <h3>Crafting & Assembly Blueprints</h3>
-          <p>Detailed manufacturing schematics tracking required iron plates, wired arrays, solar grids, and engine frame blueprint recipes.</p>
-          <span class="action-tag" style="color: var(--steel);">Compiling Log...</span>
+
+    <!-- THE UNIFIED DUAL-COLUMN FRAMEWORK -->
+    <div class="wiki-master-frame">
+      
+      <!-- COLUMN A: THE PERSISTENT STICKY SIDEBAR NAVIGATION -->
+      <aside class="wiki-sidebar">
+        <a class="sidebar-brand" href="/wiki/">AST_VISOR // MANUAL</a>
+        
+        <nav class="sidebar-menu-group">
+          <label>Core Manual Registries</label>
+          <ul class="sidebar-links">
+            <li>
+                <a class="active" href="/wiki/">
+                    <span>Database Index</span>
+                    <!-- THE REAL FIX: Embedded an actual 16-bit pixel house icon on the right edge -->
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="color: var(--lamp); flex-shrink: 0; margin-left: 8px;">
+                        <!-- Roof Grid -->
+                        <rect x="7" y="2" width="2" height="2" />
+                        <rect x="5" y="4" width="6" height="2" />
+                        <rect x="3" y="6" width="10" height="2" />
+                        <!-- Base Shell -->
+                        <rect x="2" y="8" width="12" height="2" />
+                        <rect x="2" y="10" width="3" height="4" />
+                        <rect x="11" y="10" width="3" height="4" />
+                        <!-- Top Beam / Door Header -->
+                        <rect x="5" y="10" width="6" height="2" />
+                    </svg>   
+                </a>
+            </li>
+            <li><a href="/wiki/blocks.html">Voxel Blocks Registry</a></li>
+            <li><a href="/wiki/blueprints.html">Tools & Assembly</a></li>
+            <li><a href="/wiki/planets.html">Planetary Catalog</a></li>
+          </ul>
+        </nav>
+
+        <nav class="sidebar-menu-group">
+          <label>External Uplinks</label>
+          <ul class="sidebar-links">
+            <li><a href="/" style="color: var(--lamp);">« Exit To Homepage</a></li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">AstraCube Data Node<br>Version v0.42 // Godot 4.3</div>
+      </aside>
+
+      <!-- COLUMN B: CONTENT SCROLLING SPACE -->
+      <main class="wiki-workspace">
+        
+        <!-- INTUITIVE BREADCRUMBS: Lets users track exactly where they are instantly
+        <nav class="wiki-breadcrumbs">
+          <a href="/">Home</a> ➔ <a href="/wiki/">Wiki Hub</a>
+        </nav> -->
+
+        <div class="wiki-hero">
+          <span class="label">System Database Index</span>
+          <h1>Visor System Wiki</h1>
+          <p class="lede">Welcome to the core telemetry compendium. This community-managed registry tracks raw chemical assets, operational assembly recipes, and orbital environment tracking parameters.</p>
         </div>
-      </div>
-    </main>
-    <footer>
-      <div class="wrap">AstraCube Public Database Environment · Core Engine Godot 4.3</div>
-    </footer>
+
+        <h2 style="font-family: var(--display); font-size: 1.4rem; margin-bottom: 16px; letter-spacing: 0.04em;">Primary Data Directories</h2>
+        
+        <div class="hub-directory-box">
+          <a class="directory-card" href="/wiki/blocks.html">
+            <h3>Voxel Blocks Registry</h3>
+            <p>Review hardness levels, required tools, mass attributes, and smelting inputs for all solid matter.</p>
+          </a>
+          <a class="directory-card" href="/wiki/blueprints.html">
+            <h3>Tools & Assembly</h3>
+            <p>Schematics for manufacturing components, wire configurations, solar frames, and machinery blocks.</p>
+          </a>
+          <a class="directory-card" href="/wiki/planets.html">
+            <h3>Planetary Catalog</h3>
+            <p>Orbital system data tracking bio-hazards, temperature curves, and mineral generation profiles.</p>
+          </a>
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- PERSISTENT SUB-VIEW FEEDBACK BUG SHORTCUT BUTTON -->
+    <button class="floating-bug-panel-btn" id="hud-bug-shortcut" title="Transmit feedback" aria-label="Open feedback modal">
+      <svg viewBox="0 0 24 20" aria-hidden="true">
+        <!-- Core Shell Carapace Hull -->
+        <rect x="9" y="6" width="6" height="10" stroke-width="1.5" />
+        <rect x="8" y="7" width="8" height="8" stroke-width="1.5" />
+        <!-- Wing Split Score Lines -->
+        <line x1="9" y1="10" x2="15" y2="10" stroke-width="1" />
+        <line x1="12" y1="10" x2="12" y2="15" stroke-width="1" />
+        <!-- Antenna Tips -->
+        <rect x="10" y="3" width="2" height="3" fill="currentColor" stroke-width="1" />
+        <rect x="13" y="3" width="2" height="3" fill="currentColor" stroke-width="1" />
+        <!-- Forward-Jointed Angled Limbs -->
+        <path d="M 8,8 L 5,6 M 8,10 L 4,10 M 8,12 L 5,14" />
+        <path d="M 16,8 L 19,6 M 16,10 L 20,10 M 16,12 L 19,14" />
+      </svg>
+    </button>
+
   </body>
 </html>

@@ -36,7 +36,9 @@
         --step-3: clamp(1.9rem, 4.4vw, 2.6rem);
       }
 
-      * { box-sizing: border-box; }
+      *, *::before, *::after { 
+        box-sizing: border-box; 
+      }
       html { background: var(--ink); scroll-behavior: smooth; }
       body {
         margin: 0;
@@ -1019,14 +1021,14 @@
     <button class="floating-bug-panel-btn" id="hud-bug-shortcut" title="Transmit feedback" aria-label="Open feedback modal">
       <svg viewBox="0 0 24 20" aria-hidden="true">
         <!-- Core Shell Carapace Hull -->
-        <rect x="9" y="6" width="6" height="9" stroke-width="1.5" />
-        <rect x="8" y="7" width="8" height="6" stroke-width="1.5" />
+        <rect x="9" y="6" width="6" height="10" stroke-width="1.5" />
+        <rect x="8" y="7" width="8" height="8" stroke-width="1.5" />
         <!-- Wing Split Score Lines -->
         <line x1="9" y1="10" x2="15" y2="10" stroke-width="1" />
         <line x1="12" y1="10" x2="12" y2="15" stroke-width="1" />
         <!-- Antenna Tips -->
-        <rect x="10" y="3" width="1" height="2" fill="currentColor" stroke="none" />
-        <rect x="13" y="3" width="1" height="2" fill="currentColor" stroke="none" />
+        <rect x="10" y="3" width="2" height="3" fill="currentColor" stroke-width="1" />
+        <rect x="13" y="3" width="2" height="3" fill="currentColor" stroke-width="1" />
         <!-- Forward-Jointed Angled Limbs -->
         <path d="M 8,8 L 5,6 M 8,10 L 4,10 M 8,12 L 5,14" />
         <path d="M 16,8 L 19,6 M 16,10 L 20,10 M 16,12 L 19,14" />
