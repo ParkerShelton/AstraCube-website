@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <title>AstraCube // Core Account Registration</title>
+        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 28 10v12L16 29 4 22V10z' fill='%23f2a641'/%3E%3Cpath d='M16 16 28 10v12L16 29z' fill='%23b8742a'/%3E%3Cpath d='M16 16 4 10v12l12 7z' fill='%23d68c35'/%3E%3C/svg%3E">
+        <link rel="preconnect" href="https://googleapis.com">
+        <link rel="preconnect" href="https://gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+        <style>
+            :root {
+                color-scheme: dark;
+                --ink: #0b0f1a;
+                --ink-2: #121829;
+                --ink-3: #1a2238;
+                --line: #28314a;
+                --steel: #9aa6b8;
+                --text: #e8ecf3;
+                --lamp: #f2a641;
+                --aurora: #5fd3b5;
+                --alarm: #ef5a5f;
+                --display: "Chakra Petch", sans-serif;
+                --body: "Atkinson Hyperlegible", sans-serif;
+                --mono: "JetBrains Mono", monospace;
+            }
+
+            * { box-sizing: border-box; }
+            html, body { height: 100%; margin: 0; background: var(--ink); color: var(--text); -webkit-font-smoothing: antialiased; }
+            body {
+                font-family: var(--body);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                background: radial-gradient(circle at center, #141b30 0%, var(--ink) 70%);
+            }
+
+            .register-panel {
+                background: var(--ink-2);
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                width: 100%;
+                max-width: 460px;
+                padding: 40px;
+                position: relative;
+                box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+                user-select: none;
+                -webkit-user-select: none;
+            }
+
+            /* Structural blueprint corners to match main site dashboard features */
+            .register-panel::after {
+                content: "";
+                position: absolute;
+                inset: -1px;
+                pointer-events: none;
+                background:
+                linear-gradient(to right, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 100% 2px,
+                linear-gradient(to bottom, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 2px 100%,
+                linear-gradient(to left, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 100% 2px,
+                linear-gradient(to top, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 2px 100%;
+            }
+
+            h1 { font-family: var(--display); font-size: 1.8rem; font-weight: 700; margin: 0 0 8px; letter-spacing: 0.02em; }
+            p { color: var(--steel); font-size: 0.95rem; line-height: 1.5; margin: 0 0 32px; }
+
+            .form-group { display: grid; gap: 8px; margin-bottom: 24px; }
+            .label { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--aurora); }
+            
+            .form-input {
+                background: var(--ink-3);
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                padding: 12px 14px;
+                color: var(--text);
+                font-family: var(--mono);
+                font-size: 0.85rem;
+                width: 100%;
+            }
+            .form-input:focus { outline: 1px solid var(--aurora); border-color: var(--aurora); }
+
+            .btn {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--display);
+                font-weight: 600;
+                font-size: 0.95rem;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                text-decoration: none;
+                padding: 14px 28px;
+                color: #1b1206;
+                background: var(--lamp);
+                border: 1px solid var(--lamp);
+                width: 100%;
+                cursor: pointer;
+                transition: background .15s, border-color .15s;
+            }
+            .btn:hover { background: #ffbd5c; border-color: #ffbd5c; }
+            
+            .btn::before, .btn::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                width: 9px; height: 9px;
+                border: 1px solid var(--lamp);
+                background: #1b1206;
+                transform: translateY(-50%) rotate(45deg);
+            }
+            .btn::before { left: -5px; }
+            .btn::after { right: -5px; }
+
+            #form-feedback {
+                font-family: var(--mono);
+                font-size: 0.78rem;
+                line-height: 1.4;
+                margin-bottom: 24px;
+                padding: 12px;
+                border-radius: 4px;
+                display: none;
+            }
+            #form-feedback.error { background: rgba(239, 90, 95, 0.1); border: 1px solid var(--alarm); color: var(--alarm); display: block; }
+            #form-feedback.success { background: rgba(95, 211, 181, 0.1); border: 1px solid var(--aurora); color: var(--aurora); display: block; }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="register-panel">
+            <span class="label" style="color: var(--lamp); margin-bottom: 4px; display: block;">SECURE LINK DEPLOYMENT</span>
+            <h1>Create Game Account</h1>
+            <p>Initialize your identity parameters. The credentials created below will serve as your master authorization login profile for both the game launcher and core network nodes.</p>
+            
+            <form id="registration-form">
+            <!-- INPUT 1: ALPHA VOUCHER CODE -->
+            <div class="form-group">
+                <label class="label" for="redeem-code">01 // VOUCHER ACCESS KEY</label>
+                <input class="form-input" type="text" id="redeem-code" placeholder="ASTR-XXXX-XXXX" required autocomplete="off" style="text-transform: uppercase;">
+            </div>
+
+            <!-- INPUT 2: USERNAME -->
+            <div class="form-group">
+                <label class="label" for="reg-username">02 // CHOOSE USERNAME</label>
+                <input class="form-input" type="text" id="reg-username" placeholder="e.g. Astronaut_Alpha" required autocomplete="off" maxlength="20">
+            </div>
+
+            <!-- INPUT 3: PASSWORD -->
+            <div class="form-group">
+                <label class="label" for="reg-password">03 // CHOOSE SECURITY PASSWORD</label>
+                <input class="form-input" type="password" id="reg-password" placeholder="••••••••••••" required>
+            </div>
+            
+            <div id="form-feedback"></div>
+            
+            <button class="btn" type="submit">Redeem & Register Account</button>
+            </form>
+        </div>
+
+        <script>
+            (function() {
+                const form = document.getElementById("registration-form");
+                const codeInput = document.getElementById("redeem-code");
+                const userInput = document.getElementById("reg-username");
+                const passInput = document.getElementById("reg-password");
+                const feedback = document.getElementById("form-feedback");
+
+                // Auto-extract vouchers out of email links if present (e.g. register.html?key=ASTR-1234-5678)
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlKey = urlParams.get('key');
+                if (urlKey && codeInput) {
+                    codeInput.value = urlKey.toUpperCase();
+                }
+
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    
+                    feedback.className = "success";
+                    feedback.textContent = "Validating transmission code credentials...";
+                    feedback.style.display = "block";
+
+                    try {
+                    const response = await fetch('http://localhost:3000/api/auth/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                        username: userInput.value.trim(),
+                        password: passInput.value,
+                        alphaCode: codeInput.value.trim().toUpperCase()
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        feedback.className = "error";
+                        feedback.textContent = data.error || "Verification sequence rejected.";
+                    } else {
+                        // =========================================================================
+                        // 🛠️ SUCCESS: TRANSFORM THE INTERFACE INTO A DOWNLOAD HUD TERMINAL
+                        // =========================================================================
+                        feedback.className = "success";
+                        feedback.textContent = "Redemption sequence complete! Identity initialized.";
+                        
+                        // Hide the input fields smoothly so the player can focus on the reward
+                        form.querySelectorAll('.form-group').forEach(el => el.style.display = 'none');
+                        form.querySelector('button[type="submit"]').style.display = 'none';
+
+                        // Insert custom launcher installer download configurations
+                        const downloadSection = document.createElement('div');
+                        downloadSection.style.marginTop = '24px';
+                        downloadSection.style.textAlign = 'center';
+                        downloadSection.innerHTML = `
+                        <p style="color: var(--text); font-size: 1.05rem; line-height: 1.6; margin-bottom: 24px;">
+                            Your account <strong style="color: var(--aurora); font-family: var(--mono);">${userInput.value.trim()}</strong> is now active. 
+                            Download the desktop launcher below to start exploring the cosmos.
+                        </p>
+                        
+                        <div style="display: grid; gap: 14px;">
+                            <!-- Windows Launcher Setup Binary -->
+                            <a class="btn" href="downloads/AstraCube_Launcher_Setup.exe" style="display: inline-flex; width: 100%;">
+                            DOWNLOAD FOR WINDOWS (.EXE)
+                            </a>
+                            
+                            <!-- Linux Launcher Setup Archive -->
+                            <a class="btn" href="downloads/AstraCube_Launcher_Linux.zip" style="display: inline-flex; width: 100%; background: transparent; color: var(--text); border-color: var(--line);">
+                            DOWNLOAD FOR LINUX (.ZIP)
+                            </a>
+                        </div>
+                        `;
+                        
+                        // Custom subtle styles to make the hover state on the secondary Linux button look sharp
+                        const styleLink = document.createElement('style');
+                        styleLink.innerHTML = `.register-panel .btn[href*="Linux"]:hover { background: var(--ink-3) !important; border-color: var(--steel) !important; }`;
+                        document.head.appendChild(styleLink);
+
+                        form.appendChild(downloadSection);
+                    }
+
+
+                    } catch (err) {
+                    feedback.className = "error";
+                    feedback.textContent = "Connection to central node failed. Is your Node.js server API active?";
+                    }
+                });
+
+            })();
+        </script>
+    </body>
+</html>
