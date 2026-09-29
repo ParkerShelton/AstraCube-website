@@ -863,16 +863,278 @@
         </div>
       </section>
       
-      <!-- SCREENSHOTS -->
-      <section id="screenshots" hidden>
-        <div class="wrap">
-          <div class="head">
-            <span class="label">Screenshots</span>
-            <h2>From the alpha</h2>
+
+
+      <!-- ---------- MONITOR SWIVEL CONSOLE ---------- -->
+      <section id="terminal-station" style="position: relative; overflow: hidden; padding-block: 100px; background: var(--ink); border-top: 1px solid var(--line);">
+        <div class="wrap" style="position: relative; z-index: 5;">
+          
+          <!-- Split Console Layout -->
+          <div style="display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: center;">
+            
+            <!-- Left Column: Instructional Data -->
+            <div>
+              <span class="label" style="color: var(--aurora);">Visual Diagnostic</span>
+              <h2 style="margin-block: 12px 16px;">Vessel Imaging Terminal</h2>
+              <p class="lede" style="margin-bottom: 24px;">Interact with the secondary console terminal display mount to pull live system captures. These records document real-world physics calculations, block assemblies, and multi-threaded engine feedback logs directly inside the current alpha iteration.</p>
+              
+              <!-- Controller Buttons -->
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button id="terminal-toggle-btn" class="btn" style="cursor: pointer; font-family: var(--mono); font-size: 0.8rem; background: transparent;">
+                  [ DEPLOY DECK MONITOR ]
+                </button>
+                <button id="terminal-next-btn" class="btn primary" style="cursor: pointer; font-family: var(--mono); font-size: 0.8rem; display: none;">
+                  NEXT FEED &gt;&gt;
+                </button>
+              </div>
+            </div>
+            
+            <!-- Right Column: Phantom Spacing Box to keep the text neatly on the left on desktop -->
+            <div style="height: 400px; pointer-events: none;" class="terminal-spacer-desktop"></div>
+
           </div>
-          <div class="shots" id="shots"></div>
+        </div>
+
+        <!-- The Swivel Monitor Chassis Assembly -->
+        <div id="swivel-arm-monitor" class="monitor-docked">
+          <!-- Mechanical Drag Handle / Toggle Strip -->
+          <div id="monitor-handle">
+            <div class="handle-ridges"></div>
+            <span class="handle-text">PULL TO VIEW CHANNELS</span>
+            <div class="handle-ridges"></div>
+          </div>
+
+          <!-- TV Screen Bezel Frame -->
+          <div class="monitor-bezel">
+            <!-- Screen Content Area -->
+            <div class="monitor-screen">
+              <!-- Glitch Overlay Layer -->
+              <div class="screen-glitch-layer"></div>
+              
+              <!-- Real-Time Top HUD Text -->
+              <div class="screen-hud-top">
+                <span id="screen-hud-id">SYS.FEED // STBY</span>
+                <span id="screen-hud-status" class="hud-blink">SIGNAL_LOST</span>
+              </div>
+
+              <!-- Imagery Display Window -->
+              <div class="screen-viewport">
+                <!-- This default SVG will show you a nice grid pattern until your real screenshots are loaded -->
+                <img id="screen-media-asset" src="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%23121829'%3E%3Crect width='100%25' height='100%25'/%3E%3Cpath d='M0 0h16v9H0z' stroke='%2328314a' stroke-width='.1' fill='none'/%3E%3C/svg%3E" alt="Console display matrix">
+                
+                <!-- Offline Screen State Blanket -->
+                <div id="screen-blanket-state">
+                  <div class="static-prompt">FEED OFFLINE // ENGAGE ENG_01 MOUNT</div>
+                </div>
+              </div>
+
+              <!-- Real-Time Bottom Caption Text -->
+              <div id="screen-hud-caption">
+                No secure visual data matrix synchronized. Establish console tether connection.
+              </div>
+            </div>
+          </div>
         </div>
       </section>
+
+      <!-- Extracted Styles to avoid inline chaos -->
+      <style>
+        /* Swivel Mechanics Core Box */
+        #swivel-arm-monitor {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+          width: clamp(440px, 46vw, 700px);
+          height: 380px;
+          display: grid;
+          grid-template-columns: auto 1fr;
+          align-items: center;
+          z-index: 10;
+          transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+          will-change: transform;
+        }
+        
+        /* Default Hidden/Docked Position (mostly off-screen to the right) */
+        .monitor-docked {
+          transform: translateY(-50%) translateX(calc(100% - 45px)) rotate(3deg) !important;
+        }
+        /* Fully Deployed/Engaged Position */
+        .monitor-deployed {
+          transform: translateY(-50%) translateX(-20px) rotate(0deg) !important;
+        }
+
+        /* Tactile Mounting Swivel Handle */
+        #monitor-handle {
+          background: var(--ink-3);
+          border: 2px solid var(--line);
+          border-right: none;
+          border-radius: 6px 0 0 6px;
+          width: 45px;
+          height: 75%;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          padding-block: 14px;
+          box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
+          transition: background 0.2s;
+        }
+        #swivel-arm-monitor:hover #monitor-handle {
+          background: var(--line);
+          border-color: var(--steel);
+        }
+        .handle-text {
+          font-family: var(--mono);
+          font-size: 0.62rem;
+          color: var(--lamp);
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+          letter-spacing: 0.15em;
+          user-select: none;
+        }
+        .handle-ridges {
+          width: 8px;
+          height: 30px;
+          border-inline: 2px double var(--steel);
+          opacity: 0.5;
+        }
+
+        /* Industrial Monitor Bezel Frame */
+        .monitor-bezel {
+          background: #121829;
+          border: 4px solid var(--line);
+          border-radius: 8px;
+          padding: 16px;
+          width: 100%;
+          height: 100%;
+          box-shadow: -15px 20px 40px rgba(0, 0, 0, 0.65);
+          display: flex;
+        }
+
+        /* Immersive CRT Glass Core Screen */
+        .monitor-screen {
+          background: #070a12;
+          border: 1px solid var(--line);
+          border-radius: 4px;
+          width: 100%;
+          height: 100%;
+          padding: 12px;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* Simulated Scanlines Overlay */
+        .screen-glitch-layer {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(rgba(18, 24, 41, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+          background-size: 100% 4px;
+          z-index: 4;
+          pointer-events: none;
+          opacity: 0.4;
+        }
+
+        /* Upper and Lower Monitor Text Elements */
+        .screen-hud-top {
+          display: flex;
+          justify-content: space-between;
+          font-family: var(--mono);
+          font-size: 0.68rem;
+          color: var(--steel);
+          margin-bottom: 6px;
+          border-bottom: 1px solid var(--line);
+          padding-bottom: 4px;
+        }
+        .hud-blink { animation: blink 2s steps(1) infinite; color: var(--alarm); }
+        #screen-hud-caption {
+          margin-top: 8px;
+          font-size: 0.85rem;
+          line-height: 1.4;
+          color: var(--steel);
+          border-top: 1px solid var(--line);
+          padding-top: 6px;
+          min-height: 2.8em;
+        }
+
+        /* Picture Enclosure Frame */
+        .screen-viewport {
+          flex: 1;
+          position: relative;
+          background: #020407;
+          border: 1px solid var(--line);
+          overflow: hidden;
+        }
+        #screen-media-asset {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          opacity: 0.88;
+        }
+
+        /* Screen Standby Blanket Blockers */
+        #screen-blanket-state {
+          position: absolute;
+          inset: 0;
+          background: #070a12;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 3;
+        }
+        .static-prompt {
+          font-family: var(--mono);
+          font-size: 0.72rem;
+          color: var(--steel);
+          letter-spacing: 0.08em;
+          text-align: center;
+          padding: 20px;
+          opacity: 0.6;
+        }
+
+        /* Boot Glitch Animation Triggers */
+        .boot-flash { animation: crtBoot 0.3s ease-out forwards; }
+        @keyframes crtBoot {
+          0% { opacity: 0.3; transform: scaleY(0.01); filter: brightness(3); }
+          100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+        }
+
+        /* Dynamic UI Collapse Adjustments for Tablets and Phones */
+        @media (max-width: 960px) {
+          .terminal-spacer-desktop { display: none; }
+          #terminal-station { padding-bottom: 440px; }
+          #swivel-arm-monitor {
+            top: auto;
+            bottom: 30px;
+            right: 50%;
+            transform: translateX(50%) !important;
+            width: calc(100% - 40px);
+            height: 320px;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+          }
+          #monitor-handle {
+            width: 100%;
+            height: 32px;
+            flex-direction: row;
+            border-right: 2px solid var(--line);
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            padding-inline: 14px;
+            padding-block: 0;
+          }
+          .handle-text { writing-mode: horizontal-tb; text-orientation: mixed; }
+          .handle-ridges { width: 40px; height: 6px; border-inline: none; border-top: 2px double var(--steel); border-bottom: 2px double var(--steel); }
+          .monitor-bezel { border-radius: 0 0 8px 8px; border-top: none; }
+          .monitor-docked { transform: translateX(50%) translateY(280px) !important; }
+          .monitor-deployed { transform: translateX(50%) translateY(0px) !important; }
+        }
+      </style>
+
 
       <!-- SYSTEMS -->
       <section id="systems">
@@ -1266,37 +1528,114 @@
         frozen: "",
         scorched: "",
       };
-      const SCREENSHOTS = [                  // the gallery section appears once this has entries
-        // { src: "screenshots/anvil.jpg", caption: "Hammering plate at the anvil" },
-      ];
+      // ---- Swivel Console Terminal Engine ----------------------------------------
+      (function() {
+        const ALPHA_FEEDS = [
+          { 
+            id: "CAM_LOG_01", 
+            title: "STRUCTURAL FORGE OPERATIONS", 
+            desc: "Manual striking parameters logged at an anvil station. Thermal indicators verified stable.",
+            src: "data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%2357944d'%3E%3Crect width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' fill='%23fff' font-family='sans-serif' font-size='1' text-anchor='middle'%3E[ ANVIL SCREENSHOT PLACEHOLDER ]%3C/text%3E%3C/svg%3E"
+          },
+          { 
+            id: "CAM_LOG_02", 
+            title: "ESCAPE ORBIT VELOCITY LOOP", 
+            desc: "Checking ship hull separation markers. Automated stabilizer distribution lines active.",
+            src: "data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%23dbc98f'%3E%3Crect width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' fill='%23000' font-family='sans-serif' font-size='1' text-anchor='middle'%3E[ ORBIT FLIGHT PLACEHOLDER ]%3C/text%3E%3C/svg%3E"
+          },
+          { 
+            id: "CAM_LOG_03", 
+            title: "FUEL LINE INJECTION CORE", 
+            desc: "Fluid dynamics diagnostic verifying flow limits inside sub-surface transport grids.",
+            src: "data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%234d4747'%3E%3Crect width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' fill='%23fff' font-family='sans-serif' font-size='1' text-anchor='middle'%3E[ PIPELINES PLACEHOLDER ]%3C/text%3E%3C/svg%3E"
+          }
+        ];
 
-      if (HERO_IMAGE) {
-        const hero = document.querySelector(".hero");
-        hero.classList.add("has-shot");
-        hero.style.backgroundImage = "url('" + HERO_IMAGE + "')";
-      }
-      Object.entries(WORLD_SHOTS).forEach(([name, src]) => {
-        if (!src) return;
-        const cv = document.querySelector('canvas[data-world="' + name + '"]');
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = cv.getAttribute("aria-label").replace("Illustration of", "Screenshot of");
-        img.loading = "lazy";
-        cv.replaceWith(img);
-      });
-      if (SCREENSHOTS.length) {
-        const grid = document.getElementById("shots");
-        SCREENSHOTS.forEach(({ src, caption }) => {
-          const fig = document.createElement("figure");
-          const img = document.createElement("img");
-          img.src = src; img.alt = caption || "SpaceCraft screenshot"; img.loading = "lazy";
-          fig.appendChild(img);
-          if (caption) { const c = document.createElement("figcaption"); c.textContent = caption; fig.appendChild(c); }
-          grid.appendChild(fig);
+        const monitorAssembly = document.getElementById("swivel-arm-monitor");
+        const monitorHandle = document.getElementById("monitor-handle");
+        const toggleBtn = document.getElementById("terminal-toggle-btn");
+        const nextBtn = document.getElementById("terminal-next-btn");
+        
+        const screenAsset = document.getElementById("screen-media-asset");
+        const screenBlanket = document.getElementById("screen-blanket-state");
+        const hudId = document.getElementById("screen-hud-id");
+        const hudStatus = document.getElementById("screen-hud-status");
+        const hudCaption = document.getElementById("screen-hud-caption");
+
+        let currentFeedIndex = 0;
+        let isMonitorDeployed = false;
+        let autoCycleTimer = null;
+
+        function toggleMonitorDeployment() {
+          isMonitorDeployed = !isMonitorDeployed;
+          
+          if (isMonitorDeployed) {
+            monitorAssembly.classList.remove("monitor-docked");
+            monitorAssembly.classList.add("monitor-deployed");
+            toggleBtn.textContent = "[ DOCK CONSOLE MONITOR ]";
+            nextBtn.style.display = "inline-flex";
+            bootScreenMatrix();
+          } else {
+            monitorAssembly.classList.remove("monitor-deployed");
+            monitorAssembly.classList.add("monitor-docked");
+            toggleBtn.textContent = "[ DEPLOY DECK MONITOR ]";
+            nextBtn.style.display = "none";
+            killScreenMatrix();
+          }
+        }
+
+        function bootScreenMatrix() {
+          screenBlanket.style.display = "none";
+          screenAsset.classList.add("boot-flash");
+          hudStatus.classList.remove("hud-blink");
+          hudStatus.style.color = "var(--aurora)";
+          hudStatus.textContent = "CONN_OK // 100%";
+          
+          syncFeedChannel(currentFeedIndex);
+          
+          clearInterval(autoCycleTimer);
+          autoCycleTimer = setInterval(advanceFeedChannel, 6000);
+        }
+
+        function killScreenMatrix() {
+          clearInterval(autoCycleTimer);
+          screenBlanket.style.display = "flex";
+          screenAsset.classList.remove("boot-flash");
+          hudStatus.classList.add("hud-blink");
+          hudStatus.style.color = "var(--alarm)";
+          hudStatus.textContent = "SIGNAL_LOST";
+          hudId.textContent = "SYS.FEED // STBY";
+          hudCaption.textContent = "No secure visual data matrix synchronized. Establish console tether connection.";
+        }
+
+        function syncFeedChannel(idx) {
+          if (!ALPHA_FEEDS.length) return;
+          const feed = ALPHA_FEEDS[idx];
+          
+          hudId.textContent = `SYS.FEED // ${feed.id}`;
+          screenAsset.src = feed.src;
+          screenAsset.alt = `Data log readout stream: ${feed.title}`;
+          hudCaption.innerHTML = `<strong style="color: var(--lamp); font-family: var(--mono); font-size: 0.72rem; display: block; margin-bottom: 2px;">LOG BRIEF // ${feed.title}</strong> ${feed.desc}`;
+        }
+
+        function advanceFeedChannel() {
+          currentFeedIndex = (currentFeedIndex + 1) % ALPHA_FEEDS.length;
+          screenAsset.classList.remove("boot-flash");
+          void screenAsset.offsetWidth; // Force CSS redraw
+          screenAsset.classList.add("boot-flash");
+          syncFeedChannel(currentFeedIndex);
+        }
+
+        // Event listeners
+        monitorHandle.addEventListener("click", toggleMonitorDeployment);
+        toggleBtn.addEventListener("click", toggleMonitorDeployment);
+        nextBtn.addEventListener("click", advanceFeedChannel);
+
+        monitorHandle.addEventListener("mouseenter", () => {
+          if (!isMonitorDeployed) toggleMonitorDeployment();
         });
-        document.getElementById("screenshots").hidden = false;
-        document.querySelectorAll(".families-note").forEach(n => n.hidden = true);
-      }
+      })();
+
 
       // ---- Alpha sign-up link ---------------------------------------------------
       const REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
