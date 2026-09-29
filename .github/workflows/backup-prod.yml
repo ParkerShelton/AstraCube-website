@@ -1,4 +1,4 @@
-name: "🛰️ ENGINE // AUTOMATED PRODUCTION BACKUP PIPELINE"
+name: "🛰️ ENGINE // AUTOMATED PRODUCTION BACKUP & CLEANUP PIPELINE"
 
 on:
   push:
@@ -6,17 +6,17 @@ on:
       - prod # Triggers the split second code hits your production branch
 
 jobs:
-  create-rollback-backup:
+  create-and-clean-backups:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Grants the server bot permission to forge a backup branch clone
+      contents: write # Grants the server bot permission to create and delete remote branches
     steps:
       - name: "Clone Repository Code Matrix"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetches full repository branch history logs
 
-      - name: "Generate Symmetrical Rollback Backup Branch"
+      - name: "Generate Backup & Prune Old Backups"
         run: |
           # 1. Set up clean system identity profiles for the GitHub Actions bot
           git config --global user.name "AstraCube Automation Bot"
@@ -30,7 +30,39 @@ jobs:
           # 'prod^' targets the exact previous commit parent node on the line
           git branch $BACKUP_NAME prod^
           
-          # 4. Stream the backup branch safely up to your online remote dashboard
+          # 4. Stream the new backup branch safely up to your online remote dashboard
           git push origin $BACKUP_NAME
+          echo ">> SUCCESS: Rollback safety net branch ($BACKUP_NAME) secured on remote."
+
+          # =========================================================================
+          # 🧹 THE AUTOMATED BACKUP CLEANUP RECYCLE BLOCK
+          # =========================================================================
+          echo ">> Initializing sliding-window cleanup tracker..."
           
-          echo ">> SUCCESS: Rollback safety net branch ($BACKUP_NAME) successfully secured on remote!"
+          # A. Fetch and refresh all remote tracking logs from GitHub
+          git fetch --prune
+          
+          # B. List all remote branches matching our 'prod-backup-' prefix, 
+          # sort them chronologically by author date, and store their clean names in an array
+          BACKUPS=($(git branch -r --sort=authordate | grep "origin/prod-backup-" | sed 's/origin\///g' | xargs))
+          
+          TOTAL_BACKUPS=${#BACKUPS[@]}
+          MAX_ALLOWED=3
+          
+          echo "Total backup branches currently detected on remote: $TOTAL_BACKUPS"
+
+          # C. If our total backup count exceeds our maximum allowed window, 
+          # calculate how many loops we need and delete the oldest entries from remote!
+          if [ $TOTAL_BACKUPS -gt $MAX_ALLOWED ]; then
+            NUM_TO_DELETE=$((TOTAL_BACKUPS - MAX_ALLOWED))
+            echo "Breached capacity limit. Pruning oldest $NUM_TO_DELETE backup(s)..."
+            
+            for ((i=0; i<$NUM_TO_DELETE; i++)); do
+              OLD_BACKUP_NAME=${BACKUPS[$i]}
+              echo "Recycling old cluster: Deleting $OLD_BACKUP_NAME from remote..."
+              git push origin --delete $OLD_BACKUP_NAME
+            done
+            echo ">> CLEANUP COMPLETE: Repository branch registry re-stabilized."
+          else
+            echo ">> STATUS NOMINAL: Total backups within safe margins. No pruning required."
+          fi
