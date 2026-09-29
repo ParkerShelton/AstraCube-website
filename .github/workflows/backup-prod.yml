@@ -1,0 +1,36 @@
+name: "🛰️ ENGINE // AUTOMATED PRODUCTION BACKUP PIPELINE"
+
+on:
+  push:
+    branches:
+      - prod # Triggers the split second code hits your production branch
+
+jobs:
+  create-rollback-backup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grants the server bot permission to forge a backup branch clone
+    steps:
+      - name: "Clone Repository Code Matrix"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches full repository branch history logs
+
+      - name: "Generate Symmetrical Rollback Backup Branch"
+        run: |
+          # 1. Set up clean system identity profiles for the GitHub Actions bot
+          git config --global user.name "AstraCube Automation Bot"
+          git config --global user.email "actions@github.com"
+          
+          # 2. Forge a highly unique timestamp variable matching your system clock runtime
+          TIMESTAMP=$(date +'%Y-%m-%d-%H%M%S')
+          BACKUP_NAME="prod-backup-$TIMESTAMP"
+          
+          # 3. Create a perfect clone branch pointing directly to the commit right BEFORE your push
+          # 'prod^' targets the exact previous commit parent node on the line
+          git branch $BACKUP_NAME prod^
+          
+          # 4. Stream the backup branch safely up to your online remote dashboard
+          git push origin $BACKUP_NAME
+          
+          echo ">> SUCCESS: Rollback safety net branch ($BACKUP_NAME) successfully secured on remote!"
