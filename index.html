@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+
     <style>
       /* One deliberate look: dusk on the night side of a cube planet. */
       :root {
@@ -49,7 +50,12 @@
       a:hover { color: var(--text); }
       :focus-visible { outline: 2px solid var(--aurora); outline-offset: 3px; border-radius: 2px; }
 
-      .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 32px; }
+      /* ---------- Global Content Framing Layout ---------- */
+      .wrap { 
+        max-width: 1160px; 
+        margin: 0 auto; 
+        padding-inline: 32px; /* Spacious cushion away from screen walls on mobile */
+      }
 
       h1, h2, h3 {
         font-family: var(--display);
@@ -139,11 +145,7 @@
         text-align: center;
         padding: clamp(48px, 10vh, 110px) 20px 0;
         max-width: 760px;
-
       }
-      /* .hero-copy h1 {
-        white-space: nowrap;
-      } */
       .eyebrow {
         display: inline-flex;
         align-items: center;
@@ -165,7 +167,7 @@
         font-size: clamp(2.6rem, 9vw, 6.2rem);
         font-weight: 700;
         letter-spacing: 0.2em;
-        margin-right: -0.2em; /* letter-spacing leaves a trailing gap; keep the word centred */
+        margin-right: -0.2em;
         line-height: 1;
         text-shadow: 0 2px 30px rgba(7, 10, 20, 0.7);
       }
@@ -185,7 +187,6 @@
         text-shadow: 0 1px 12px rgba(7, 10, 20, 0.95);
       }
 
-      /* bracketed button, like a readout on the ship console */
       .btn {
         position: relative;
         display: inline-flex;
@@ -223,23 +224,11 @@
       .hero.has-shot { background: #0a0d1c center / cover no-repeat; }
       .hero.has-shot #scene { display: none; }
       .hero.has-shot::before {
-        /* keep the title readable over a screenshot */
         content: "";
         position: absolute;
         inset: 0;
         background: linear-gradient(to bottom, rgba(7,10,20,0.75), rgba(7,10,20,0.1) 55%, rgba(7,10,20,0.6));
       }
-      .art-note {
-        position: absolute;
-        z-index: 1;
-        left: 16px;
-        bottom: 16px;
-        font-family: var(--mono);
-        font-size: 0.68rem;
-        letter-spacing: 0.08em;
-        color: rgba(232,236,243,0.55);
-      }
-      .hero.has-shot .art-note { display: none; }
       .scroll-hint {
         position: absolute;
         z-index: 1;
@@ -253,49 +242,6 @@
         text-decoration: none;
       }
 
-      /* ---------- Floating Sci-Fi Bug Button Refit ---------- */
-      .floating-bug-panel-btn {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        
-        /* THE CRITICAL FIX: Forces the square button completely over the canvas veil shroud! */
-        z-index: 100001; 
-        
-        width: 40px;
-        height: 40px;
-        background: rgba(18, 24, 41, 0.95); /* Slightly boosted background opacity for extra popping contrast */
-        border: 1px solid var(--steel);
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-      }
-
-      .floating-bug-panel-btn:hover {
-        border-color: var(--aurora);
-        box-shadow: 0 0 12px rgba(95, 211, 181, 0.35);
-      }
-
-      /* Micro-Voxel Insect Matrix (Traces your exact launcher bug inside clean SVG vector paths) */
-      .floating-bug-panel-btn svg {
-        width: 30px;
-        height: 30px;
-        fill: none;
-        stroke: var(--text);
-        stroke-width: 1.5;
-        stroke-linecap: square;
-        transition: stroke 0.15s ease;
-      }
-
-      .floating-bug-panel-btn:hover svg {
-        stroke: var(--aurora);
-      }
-
-
       /* ---------- sections ---------- */
       section { padding-block: 80px; }
       section + section { border-top: 1px solid var(--line); }
@@ -303,7 +249,6 @@
       .head.center { justify-items: center; text-align: center; }
       .head.center .lede { text-align: center; }
 
-      /* The opening: a real sequence, so it is numbered */
       .story {
         list-style: none;
         margin: 0;
@@ -345,7 +290,6 @@
         .story li::after { top: 4px; left: -7px; }
       }
 
-      /* Worlds: four illustrated panels */
       .families {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -369,14 +313,10 @@
       .fam h3 { font-size: 1.2rem; letter-spacing: 0.06em; text-transform: uppercase; }
       .fam p { color: var(--steel); font-size: 0.97rem; }
       @media (max-width: 900px) { .families { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-      @media (max-width: 480px) { .families { grid-template-columns: 1fr; } .fam canvas, .fam img { aspect-ratio: 16 / 10; } }
-      .families-note { margin: -36px 0 56px; color: var(--steel); font-size: var(--step--1); }
-
-      /* Screenshots: shown once SCREENSHOTS has images in it */
-      .shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-      .shots figure { margin: 0; display: grid; gap: 8px; }
-      .shots img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; border: 1px solid var(--line); }
-      .shots figcaption { color: var(--steel); font-size: var(--step--1); }
+      @media (max-width: 480px) { 
+        .families { grid-template-columns: 1fr; } 
+        .fam canvas, .fam img { aspect-ratio: 16 / 10; } 
+      }
 
       .classes {
         display: grid;
@@ -386,61 +326,92 @@
       }
       .classes .lede { font-size: var(--step-0); }
       .table-scroll { overflow-x: auto; }
+      
       table { width: 100%; border-collapse: collapse; font-size: 0.97rem; }
       th, td { text-align: left; padding: 11px 12px 11px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
       th { font-family: var(--mono); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel); }
       td.cls { font-family: var(--display); font-weight: 700; font-size: 1.3rem; color: var(--lamp); width: 3rem; }
       td.name { font-weight: 700; white-space: nowrap; }
       td.desc { color: var(--steel); }
+      
       @media (max-width: 860px) { .classes { grid-template-columns: 1fr; gap: 24px; } }
 
-      /* Systems */
-      .systems {
+      .systems-grid-panel {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1px;
         background: var(--line);
         border: 1px solid var(--line);
+        box-shadow: 0 8px 32px rgba(7, 10, 22, 0.5);
+        user-select: none;
+        -webkit-user-select: none;
       }
-      .sys { background: var(--ink); padding: 28px 26px 30px; display: grid; gap: 10px; align-content: start; }
-      .sys .label { color: var(--aurora); }
-      .sys p { color: var(--steel); font-size: 0.97rem; }
-      .sys ul { margin: 4px 0 0; padding-left: 18px; color: var(--steel); font-size: 0.95rem; display: grid; gap: 4px; }
-      .sys li::marker { color: var(--lamp-dim); }
-      @media (max-width: 900px) { .systems { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-      @media (max-width: 600px) { .systems { grid-template-columns: 1fr; } }
 
-      /* ---------- After dark: the Watcher ---------- */
-      .dark {
+      .console-card {
+        background: var(--ink-2);
+        padding: 36px;
+        display: grid;
+        gap: 16px;
+        align-content: start;
+        position: relative;
+        cursor: default;
+      }
+      .console-card h3 { font-size: 1.4rem; letter-spacing: 0.04em; color: var(--text); }
+      .console-card p { color: var(--steel); font-size: 1.0rem; line-height: 1.6; margin: 0; }
+      
+      @media (max-width: 820px) {
+        .systems-grid-panel { grid-template-columns: 1fr; }
+        .console-card { padding: 28px 24px; }
+      }
+
+      .hud-terminal-display {
+        background: #060a14;
+        border: 1px solid rgba(95, 211, 181, 0.25);
+        border-radius: 4px;
+        padding: 36px 48px 24px;
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        color: var(--aurora);
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 48px;
+        width: 100%;
+        position: relative;
+        box-shadow: inset 0 0 20px rgba(95, 211, 181, 0.08), 0 8px 24px rgba(5, 7, 14, 0.6);
+      }
+      .hud-terminal-display::before {
+        content: "SYS_STATUS: TELEMETRY_ACTIVE";
+        position: absolute;
+        top: 4px; left: 10px;
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        color: rgba(95, 211, 181, 0.4);
+      }
+      .hud-terminal-display::after {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        pointer-events: none;
         background:
-          radial-gradient(90% 120% at 80% 100%, rgba(95, 211, 181, 0.07), transparent 60%),
-          #05070d;
+          linear-gradient(to right, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 100% 2px,
+          linear-gradient(to bottom, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 2px 100%,
+          linear-gradient(to left, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 100% 2px,
+          linear-gradient(to top, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 2px 100%;
+      }
+      .hud-node { border-left: 2px solid rgba(95, 211, 181, 0.15); padding-left: 10px; }
+      .hud-label { color: var(--steel); display: block; font-size: 0.65rem; letter-spacing: 0.1em; margin-bottom: 4px; }
+      .hud-value { color: var(--text); font-size: 0.88rem; font-weight: 500; }
+      .hud-value.alert { color: var(--lamp); text-shadow: 0 0 8px rgba(242, 166, 65, 0.3); }
+
+      /* ---------- After dark: the Watcher (FIXED COMMENT SYNTAX) ---------- */
+      .dark {
+        background: #05070d; 
         border-top: 1px solid var(--line);
         padding-block: 0;
         overflow: hidden;
       }
-
-      .dark .wrap {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-        gap: 40px;
-        align-items: center;
-      }
       .dark-copy { display: grid; gap: 18px; padding-block: 80px; }
-      .dark-copy .label { color: var(--aurora); }
-      .dark-copy p { color: var(--steel); max-width: 52ch; }
-      .readout {
-        font-family: var(--mono);
-        font-size: 0.8rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--aurora);
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .readout b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+      
       .hint { font-size: var(--step--1); color: #6c7890; font-style: italic; }
       .stage {
         position: relative;
@@ -448,7 +419,6 @@
         min-height: 420px;
       }
       .stage::after {
-        /* fog along the ground */
         content: "";
         position: absolute;
         inset: auto 0 0 0;
@@ -456,88 +426,154 @@
         background: linear-gradient(to top, #05070d 10%, rgba(5, 7, 13, 0));
         pointer-events: none;
       }
-      .stage::before {
-        content: "";
-        position: absolute;
-        inset: auto 0 6% 0;
-        height: 1px;
-        background: linear-gradient(to right, transparent, #28314a 30%, #28314a 70%, transparent);
-      }
+      
       #watcher {
         position: absolute;
-        bottom: 6%;
+        bottom: 0; 
         left: 50%;
         height: 78%;
         width: auto;
         transform-origin: 50% 100%;
         overflow: visible;
+        transition: transform 0.15s ease-out;
       }
+      
       @media (max-width: 820px) {
         .dark .wrap { grid-template-columns: 1fr; gap: 0; }
         .dark-copy { padding-block: 64px 8px; }
         .stage { min-height: 340px; }
-        
-        /* THE WATCHER GLOW FIX: Centers your green radial lighting backdrop 
-           horizontally to match the centered position of the Watcher SVG character model! */
-        .dark {
-          background:
-            radial-gradient(120% 120% at 50% 100%, rgba(95, 211, 181, 0.09), transparent 60%),
-            #05070d;
-        }
+        .dark { background: #05070d; }
       }
 
-      /* Alpha */
-      .alpha-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 56px; }
-      .alpha-grid h3 { margin-bottom: 12px; }
-      .alpha-grid ol, .alpha-grid ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; color: var(--steel); }
-      .alpha-grid li::marker { color: var(--lamp); font-family: var(--mono); }
-      .alpha-grid strong { color: var(--text); }
-      .note { margin-top: 16px; color: var(--steel); font-size: var(--step--1); }
-      code {
-        font-family: var(--mono);
-        font-size: 0.85em;
-        color: var(--text);
+      /* ---------- Floating Sci-Fi Bug Button (FIXED COMMENT SYNTAX) ---------- */
+      .floating-bug-panel-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 100001; 
+        width: 40px;
+        height: 40px;
+        background: rgba(18, 24, 41, 0.95);
+        border: 1px solid var(--steel);
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .floating-bug-panel-btn:hover {
+        border-color: var(--aurora);
+        box-shadow: 0 0 12px rgba(95, 211, 181, 0.35);
+      }
+      .floating-bug-panel-btn svg {
+        width: 24px;
+        height: 20px;
+        fill: none;
+        stroke: var(--text);
+        stroke-width: 1.5;
+        stroke-linecap: square;
+        transition: stroke 0.15s ease;
+      }
+      .floating-bug-panel-btn:hover svg { stroke: var(--aurora); }
+
+      /* ---------- Visor Night Mode Light Shroud ---------- */
+      #visor-night-shroud {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+        display: block;
+      }
+      @media (pointer: coarse), (max-width: 900px) {
+        #visor-night-shroud { display: none !important; }
+      }
+
+      /* ---------- Modal Form Sign-Up Overlays ---------- */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 100002;
+        background: rgba(7, 10, 18, 0.85);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+      .modal-overlay.active { opacity: 1; pointer-events: auto; }
+      .modal-box {
+        background: #060a14;
+        border: 1px solid rgba(95, 211, 181, 0.25);
+        border-radius: 4px;
+        width: 100%;
+        max-width: 440px;
+        padding: 32px;
+        position: relative;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+      }
+      .modal-box::after {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        pointer-events: none;
+        background:
+          linear-gradient(to right, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 100% 2px,
+          linear-gradient(to bottom, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 2px 100%,
+          linear-gradient(to left, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 100% 2px,
+          linear-gradient(to top, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 2px 100%;
+      }
+      .modal-box h2 { font-size: 1.5rem; color: var(--text); margin-bottom: 8px; letter-spacing: 0.02em; }
+      .modal-box p { color: var(--steel); font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px; }
+      .form-group { display: grid; gap: 8px; margin-bottom: 20px; }
+      .form-input {
         background: var(--ink-3);
         border: 1px solid var(--line);
-        border-radius: 3px;
-        padding: 1px 5px;
-        overflow-wrap: anywhere;
+        border-radius: 4px;
+        padding: 12px 14px;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        width: 100%;
       }
-      @media (max-width: 760px) { .alpha-grid { grid-template-columns: 1fr; } }
-
-      .signup {
-        margin-top: 64px;
-        border: 1px solid var(--lamp-dim);
-        background:
-          radial-gradient(120% 140% at 100% 0%, rgba(242, 166, 65, 0.16), transparent 60%),
-          var(--ink-2);
-        padding: 40px 36px;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 28px;
-        align-items: center;
+      .form-input:focus { outline: 1px solid var(--aurora); border-color: var(--aurora); }
+      .modal-close-btn {
+        position: absolute;
+        top: 14px; right: 16px;
+        background: transparent;
+        border: none;
+        color: var(--steel);
+        font-family: var(--mono);
+        font-size: 1.1rem;
+        cursor: pointer;
+        z-index: 10;
       }
-      .signup h2 { font-size: var(--step-2); margin-bottom: 8px; }
-      .signup p { color: var(--steel); max-width: 56ch; }
-      .signup .btn { margin-inline: 8px; }
-      @media (max-width: 700px) { .signup { grid-template-columns: 1fr; padding: 30px 22px; } }
-
-
+      .modal-close-btn:hover { color: var(--alarm); }
+      #form-feedback { font-family: var(--mono); font-size: 0.75rem; margin-top: -12px; margin-bottom: 16px; display: none; }
+      #form-feedback.error { color: var(--alarm); display: block; }
+      #form-feedback.success { color: var(--aurora); display: block; }
 
       /* =========================================================================
-         🎮 ASTRACUBE BALANCED FOOTER CORE LAYOUT
+         🎮 ASTRACUBE BALANCED FOOTER CSS CORE (FIXED DECK FORMATTING)
          ========================================================================= */
-      footer { 
-        border-top: 1px solid var(--line); 
-        background: #060912; 
-        padding-block: 64px 36px; 
-        color: var(--steel); 
+      footer {
+        border-top: 1px solid var(--line);
+        background: #060912;
+        padding-block: 64px 36px;
+        color: var(--steel);
       }
       
-      /* Desktop grid remains 100% identical and un-changed */
+      /* Desktop Grid: Outer description anchors framing your close button deck tray */
       .footer-action-split {
         display: grid;
-        grid-template-columns: 1fr auto 1fr; 
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
         gap: 56px; 
         margin-bottom: 48px;
@@ -553,7 +589,6 @@
         border-radius: 4px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
       }
-
       .footer-central-deck .btn {
         font-size: 0.78rem;
         padding: 9px 18px;
@@ -577,28 +612,33 @@
         gap: 16px;
         padding-top: 24px;
         border-top: 1px solid rgba(40, 49, 74, 0.4);
-        
         font-family: var(--mono);
         font-size: 0.68rem;
         letter-spacing: 0.02em;
         color: rgba(154, 166, 184, 0.4);
       }
       
-      .footer-links-group {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
+      .footer-links-group { 
+        display: flex; 
+        gap: 20px; 
+        flex-wrap: wrap; 
       }
       
-      .footer-baseline-row a { color: rgba(154, 166, 184, 0.4); text-decoration: none; transition: color 0.15s ease; }
-      .footer-baseline-row a:hover { color: var(--text); }
-
-      .footer-tech-badges {
-        display: flex;
-        gap: 16px;
-        flex-wrap: wrap;
+      .footer-baseline-row a { 
+        color: rgba(154, 166, 184, 0.4); 
+        text-decoration: none; 
+        transition: color 0.15s ease; 
+      }
+      .footer-baseline-row a:hover { 
+        color: var(--text); 
       }
 
+      .footer-tech-badges { 
+        display: flex; 
+        gap: 16px; 
+        flex-wrap: wrap; 
+      }
+      
       .status-badge {
         border-left: 2px solid rgba(95, 211, 181, 0.25);
         padding-left: 8px;
@@ -608,328 +648,61 @@
         color: rgba(154, 166, 184, 0.4);
       }
 
+      /* Desktop Layout Sorting Hierarchy Maps */
       .footer-links-group { order: 1; }
       .footer-tech-badges { order: 2; }
       .footer-scroll-top-link { order: 3; }
 
       /* =========================================================================
-         🛠️ THE MOBILE STRUCTURAL SPACING ADAPTATION
+         🛠️ THE RESPONSIVE MOBILE SPACING ADAPTATION SYSTEM
          ========================================================================= */
       @media (max-width: 860px) {
-        .footer-action-split { 
-          grid-template-columns: 1fr; 
-          gap: 24px; 
+        .footer-action-split {
+          grid-template-columns: 1fr;
+          gap: 24px;
           justify-items: center;
           text-align: center;
           margin-bottom: 36px;
         }
         
-        /* THE FIX: Switches your central button deck from horizontal row to vertical column stack [source: 1.1.2, 1.1.7] */
-        .footer-central-deck { 
+        .footer-central-deck {
           display: flex;
-          flex-direction: column; 
-          align-items: stretch; /* Forces both buttons to expand to matching widths inside the card box */
+          flex-direction: column;
+          align-items: stretch;
           justify-content: center;
           gap: 14px;
           width: 100%;
-          max-width: 280px; /* Controlled clean width bounding box for the mobile button list */
+          max-width: 280px;
           padding: 16px;
         }
-
-        .footer-central-deck .btn {
-          width: 100%;
-          justify-content: center;
-        }
-
-        .footer-label-anchor { 
-          text-align: center !important; 
-          font-size: 0.65rem;
+        .footer-central-deck .btn { 
+          width: 100%; 
+          justify-content: center; 
         }
         
-        .footer-baseline-row { 
-          flex-direction: column; 
-          align-items: center; 
+        .footer-label-anchor { 
+          text-align: center !important; 
+          font-size: 0.65rem; 
+        }
+        
+        .footer-baseline-row {
+          flex-direction: column;
+          align-items: center;
           text-align: center;
-          gap: 20px; 
+          gap: 20px;
           padding-top: 28px;
         }
-
-        .footer-scroll-top-link { 
-          order: -1 !important; 
+        
+        .footer-scroll-top-link {
+          order: -1 !important;
           font-weight: 600;
           display: inline-block;
           margin-bottom: 2px;
         }
         
-        .footer-links-group { 
-          order: 1 !important;
-          justify-content: center; 
-          width: 100%;
-          gap: 16px;
-        }
-        
-        .footer-tech-badges { 
-          order: 2 !important;
-          justify-content: center; 
-          width: 100%;
-          gap: 12px;
-        }
+        .footer-links-group { order: 1 !important; justify-content: center; width: 100%; gap: 16px; }
+        .footer-tech-badges { order: 2 !important; justify-content: center; width: 100%; gap: 12px; }
       }
-
-
-
-
-
-      @media (prefers-reduced-motion: reduce) {
-        html { scroll-behavior: auto; }
-        .eyebrow i { animation: none; }
-      }
-
-      /* ---------- Futuristic Console Grid Refit ---------- */
-      .systems-grid-panel {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1px; 
-        background: var(--line); 
-        border: 1px solid var(--line);
-        box-shadow: 0 8px 32px rgba(7, 10, 22, 0.5);
-        
-        /* Disables text highlight carets and dragging outlines completely */
-        user-select: none; 
-        -webkit-user-select: none;
-      }
-
-      .console-card {
-        background: var(--ink-2); 
-        padding: 36px;
-        display: grid;
-        gap: 16px;
-        align-content: start;
-        position: relative;
-        cursor: default; /* Arrow cursor remains a standard pointer */
-      }
-
-      .console-card h3 {
-        font-size: 1.4rem;
-        letter-spacing: 0.04em;
-        color: var(--text);
-      }
-
-      .console-card p {
-        color: var(--steel);
-        font-size: 1.0rem;
-        line-height: 1.6;
-        margin: 0;
-      }
-
-      @media (max-width: 820px) {
-        .systems-grid-panel { grid-template-columns: 1fr; }
-        .console-card { padding: 28px 24px; }
-      }
-
-      /* ---------- Sci-Fi Visor Monitor Interface ---------- */
-      .hud-terminal-display {
-        background: #060a14; 
-        border: 1px solid rgba(95, 211, 181, 0.25); 
-        border-radius: 4px;
-        padding: 36px 48px 24px; 
-        font-family: var(--mono);
-        font-size: 0.75rem;
-        color: var(--aurora);
-        
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px 48px; 
-        width: 100%; 
-        
-        position: relative;
-        box-shadow: 
-          inset 0 0 20px rgba(95, 211, 181, 0.08),
-          0 8px 24px rgba(5, 7, 14, 0.6);
-      }
-
-
-      /* Top telemetry status bar running across the interface window */
-      .hud-terminal-display::before {
-        content: "SYS_STATUS: TELEMETRY_ACTIVE";
-        position: absolute;
-        top: 4px; left: 10px;
-        font-size: 0.6rem;
-        letter-spacing: 0.08em;
-        color: rgba(95, 211, 181, 0.4);
-      }
-
-      /* Neon alignment corner ticks matching the blueprint style */
-      .hud-terminal-display::after {
-        content: "";
-        position: absolute;
-        inset: -1px;
-        pointer-events: none;
-        background:
-          linear-gradient(to right, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 100% 2px,
-          linear-gradient(to bottom, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 2px 100%,
-          linear-gradient(to left, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 100% 2px,
-          linear-gradient(to top, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 2px 100%;
-      }
-
-      .hud-node {
-        border-left: 2px solid rgba(95, 211, 181, 0.15);
-        padding-left: 10px;
-      }
-
-      .hud-label {
-        color: var(--steel);
-        display: block;
-        font-size: 0.65rem;
-        letter-spacing: 0.1em;
-        margin-bottom: 4px;
-      }
-
-      .hud-value {
-        color: var(--text);
-        font-size: 0.88rem;
-        font-weight: 500;
-      }
-
-      .hud-value.alert {
-        color: var(--lamp);
-        text-shadow: 0 0 8px rgba(242, 166, 65, 0.3);
-      }
-
-      /* ---------- Voxel Tech Overlay Form Modal ---------- */
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 100;
-        background: rgba(7, 10, 18, 0.85);
-        backdrop-filter: blur(4px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease;
-      }
-      
-      .modal-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .modal-box {
-        background: #060a14;
-        border: 1px solid rgba(95, 211, 181, 0.25);
-        border-radius: 4px;
-        width: 100%;
-        max-width: 440px;
-        padding: 32px;
-        position: relative;
-        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
-      }
-
-      /* Structural blueprint corners to match your core theme layouts */
-      .modal-box::after {
-        content: "";
-        position: absolute;
-        inset: -1px;
-        pointer-events: none;
-        background:
-          linear-gradient(to right, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 100% 2px,
-          linear-gradient(to bottom, var(--aurora) 8px, transparent 8px) no-repeat 0 0 / 2px 100%,
-          linear-gradient(to left, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 100% 2px,
-          linear-gradient(to top, var(--aurora) 8px, transparent 8px) no-repeat 100% 100% / 2px 100__;
-      }
-
-      .modal-box h2 {
-        font-size: 1.5rem;
-        color: var(--text);
-        margin-bottom: 8px;
-        letter-spacing: 0.02em;
-      }
-
-      .modal-box p {
-        color: var(--steel);
-        font-size: 0.9rem;
-        line-height: 1.5;
-        margin-bottom: 24px;
-      }
-
-      /* Form Elements */
-      .form-group {
-        display: grid;
-        gap: 8px;
-        margin-bottom: 20px;
-      }
-
-      .form-input {
-        background: var(--ink-3);
-        border: 1px solid var(--line);
-        border-radius: 4px;
-        padding: 12px 14px;
-        color: var(--text);
-        font-family: var(--mono);
-        font-size: 0.85rem;
-        width: 100%;
-      }
-
-      .form-input:focus {
-        outline: 1px solid var(--aurora);
-        border-color: var(--aurora);
-      }
-
-      .modal-close-btn {
-        position: absolute;
-        top: 14px; right: 16px;
-        background: transparent;
-        border: none;
-        color: var(--steel);
-        font-family: var(--mono);
-        font-size: 1.1rem;
-        cursor: pointer;
-        z-index: 10;
-      }
-      .modal-close-btn:hover { color: var(--alarm); }
-
-      #form-feedback {
-        font-family: var(--mono);
-        font-size: 0.75rem;
-        margin-top: -12px;
-        margin-bottom: 16px;
-        display: none;
-      }
-      #form-feedback.error { color: var(--alarm); display: block; }
-      #form-feedback.success { color: var(--aurora); display: block; }
-
-
-      /* ---------- Visor Night Mode Light Matrix Overlay ---------- */
-      #visor-night-shroud {
-        position: fixed;
-        inset: 0;
-        
-        /* THE DUAL SAFETY OVERRIDE:
-           Locks the bug report button completely over the overlay layer */
-        z-index: 9999; 
-        
-        pointer-events: none; 
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1); 
-        display: block; /* Default visible on desktop layouts */
-      }
-
-      /* 🛠️ THE MOBILE FALLBACK FIX:
-         If the device uses a touchscreen (coarse pointer) OR the screen width 
-         is smaller than tablet sizes (900px), we wipe the darkness out of existence.
-         This guarantees mobile users see everything perfectly bright with zero layout shifting! */
-      @media (pointer: coarse), (max-width: 900px) {
-        #visor-night-shroud {
-          display: none !important;
-        }
-      }
-
-
-
     </style>
   </head>
 
