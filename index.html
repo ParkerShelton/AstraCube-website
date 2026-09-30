@@ -36,12 +36,13 @@
         --step-3: clamp(1.9rem, 4.4vw, 2.6rem);
       }
 
-      *, *::before, *::after { 
+      * { 
         box-sizing: border-box; 
       }
       html { background: var(--ink); scroll-behavior: smooth; }
       body {
-        margin: 0;
+        margin: 0 !important;
+        padding: 0 !important;
         background: var(--ink);
         color: var(--text);
         font: 400 var(--step-0)/1.6 var(--body);
@@ -245,7 +246,7 @@
       }
 
       /* ---------- sections ---------- */
-      section { padding-block: 80px; }
+      section { padding-block: 80px; position: relative !important;}
       section + section { border-top: 1px solid var(--line); }
       .head { display: grid; gap: 14px; margin-bottom: 44px; }
       .head.center { justify-items: center; text-align: center; }
@@ -338,16 +339,106 @@
       
       @media (max-width: 860px) { .classes { grid-template-columns: 1fr; gap: 24px; } }
 
+      /* ---------- UPGRADED SYSTEMS DASHBOARD TRACE MESH ---------- */
       .systems-grid-panel {
+        position: relative; /* Fixed: Forms the parent boundary anchor for our floating vector art */
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1px;
         background: var(--line);
         border: 1px solid var(--line);
         box-shadow: 0 8px 32px rgba(7, 10, 22, 0.5);
         user-select: none;
         -webkit-user-select: none;
+        margin-inline: auto;
       }
+
+      /* =========================================================================
+         🪐 TACTICAL BackDROP OVERLAY SYSTEMS & MOTOR ENGINES
+         ========================================================================= */
+      
+      /* Hard structural wrapper neutralizes layout bleeding to force the pot behind cards */
+      .pot-backdrop-shield {
+        position: absolute;
+        left: calc(50% - 800px); /* Pushed left so the card section safely overlaps its right side */
+        bottom: 150px;
+        z-index: 0; /* Locked behind the center section cards */
+        width: 320px;
+        height: 320px;
+        pointer-events: none;
+      }
+      .bg-vector-pot {
+        width: 100% !important;
+        height: 100% !important;
+        transform: rotate(-16deg); /* The original sketch angle tilt */
+      }
+
+      /* MOTORIZED VEHICLE LAYER: Mounted directly on top of your central panel trim line */
+      .crawler-track-gutter {
+        position: absolute;
+        left: calc(50% - 580px);
+        right: calc(50% - 580px);
+        /* THE CRITICAL GROUNDING FIX: Strips top-down guessing and locks 
+           the container explicitly onto the upper border trim of the grid */
+        top: unset !important;
+        bottom: calc(100% - 2px) !important;
+        height: 48px;
+        z-index: 15;
+        pointer-events: none;
+      }
+      .bg-vector-rover {
+        position: absolute;
+        top: 10px;
+        transform: translateY(-100%) scaleX(-1); /* Flips face-forward right */
+        transform-origin: bottom center;
+        width: 86px !important;
+        height: 58px !important;
+        z-index: 25; /* Floats over the line but lets the visor mask track over it */
+        animation: crawlerPatrol 22s linear infinite;
+        pointer-events: none;
+      }
+
+      /* PERFECTLY BOUNDED PATROL LOOP: Re-calculated to match the cards width precisely */
+      @keyframes crawlerPatrol {
+        0% { left: 24px; transform: translateY(-100%) scaleX(-1); }   /* Driving Right */
+        45% { left: calc(100% - 250px); transform: translateY(-100%) scaleX(-1); } /* Stops at the rocket sill */
+        48% { left: calc(100% - 250px); transform: translateY(-100%) scaleX(1); }  /* Pauses and turns Left */
+        95% { left: 24px; transform: translateY(-100%) scaleX(1); }   /* Driving Left back to base */
+        100% { left: 24px; transform: translateY(-100%) scaleX(-1); } /* Resets right */
+      }
+
+      .bg-vector-fauna {
+        position: absolute;
+        right: calc(50% - 590px);
+        bottom: 110px;
+        z-index: 1;
+        width: 120px !important;
+        height: 120px !important;
+        pointer-events: none;
+      }
+
+      @media (max-width: 1280px) {
+        .pot-backdrop-shield, .crawler-track-gutter, .bg-vector-fauna { display: none !important; }
+      }
+
+
+
+
+
+      .recipe-flow-row {
+        display: flex; justify-content: space-between; align-items: center;
+        font-family: var(--mono); font-size: 0.72rem; color: var(--steel);
+        padding-top: 4px; border-top: 1px dashed rgba(40, 49, 74, 0.3); margin-top: 4px;
+      }
+      .recipe-flow-row span.output { color: var(--aurora); font-weight: 500; }
+
+      @media (max-width: 1160px) {
+        /* Prunes background decals on narrow screens so they never clip or crowd text layout rows */
+        .bg-vector-pot, .bg-vector-rover, .bg-vector-fauna { display: none !important; }
+      }
+      @media (max-width: 1040px) { .systems-grid-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 680px) { .systems-grid-panel { grid-template-columns: 1fr; } }
+
 
       .console-card {
         background: var(--ink-2);
@@ -705,6 +796,45 @@
         .footer-links-group { order: 1 !important; justify-content: center; width: 100%; gap: 16px; }
         .footer-tech-badges { order: 2 !important; justify-content: center; width: 100%; gap: 12px; }
       }
+
+
+     /* Three-column refit override for the central Systems grid console */
+      .systems-grid-panel.expanded-layout {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      }
+      
+      /* Symmetrical item recipe layout for hidden BotW-style cooking outputs */
+      .recipe-flow-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--steel);
+        padding-top: 4px;
+        border-top: 1px dashed rgba(40, 49, 74, 0.3);
+        margin-top: 4px;
+      }
+      .recipe-flow-row span.output {
+        color: var(--aurora);
+        font-weight: 500;
+      }
+
+      @media (max-width: 1040px) {
+        .systems-grid-panel.expanded-layout {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+      }
+      @media (max-width: 680px) {
+        .systems-grid-panel.expanded-layout {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      #system-overview {
+        margin-bottom: 100px;
+      }
+
     </style>
   </head>
 
@@ -877,7 +1007,7 @@
       <!-- SYSTEMS -->
       <section id="systems">
         <div class="wrap">
-          <div class="head">
+          <div class="head" id="system-overview">
             <span class="label" style="color: var(--aurora);">System Overview</span>
             <h2>Engines of Progression</h2>
             <p class="lede">
@@ -885,9 +1015,94 @@
             </p>
           </div>
           
-          <!-- The Unified Console Grid Panel Wrapper -->
-          <div class="systems-grid-panel">
+
+          <!-- FIXED LAYER SHIELD: Drops the massive pot strictly *behind* the text cards -->
+          <div class="pot-backdrop-shield">
+            <svg class="bg-vector-pot" viewBox="0 0 100 100" xmlns="http://w3.org" aria-hidden="true">
+              <rect x="24" y="24" width="52" height="12" fill="#2d2d33" />
+              <rect x="18" y="28" width="64" height="12" fill="#3a3a42" />
+              <rect x="22" y="34" width="56" height="16" fill="#0b0f1a" />
+              <rect x="24" y="36" width="52" height="12" fill="#462c1a" />
+              <g transform="rotate(-15, 32, 28)">
+                <rect x="34" y="26" width="4" height="10" fill="#e8ecf3" />
+                <rect x="28" y="16" width="16" height="10" rx="1" fill="#1f5c66" />
+                <rect x="30" y="12" width="12" height="4" fill="#308594" />
+              </g>
+              <g transform="rotate(12, 54, 38)">
+                <rect x="46" y="32" width="18" height="12" rx="2" fill="#8c3d3a" />
+                <rect x="48" y="34" width="14" height="8" fill="#5c2e2b" />
+                <rect x="52" y="36" width="6" height="4" fill="#ab4a46" />
+              </g>
+              <g transform="rotate(25, 68, 20)">
+                <rect x="68" y="14" width="3" height="18" fill="#388c38" />
+                <rect x="66" y="8" width="7" height="6" fill="#f2a641" />
+              </g>
+              <rect x="14" y="40" width="72" height="14" rx="2" fill="#3a3a42" />
+              <rect x="18" y="44" width="64" height="14" rx="2" fill="#4a4a54" />
+              <rect x="16" y="46" width="68" height="18" rx="2" fill="#4d4d59" />
+              <rect x="2" y="32" width="10" height="10" rx="1" fill="#202024" />
+              <rect x="88" y="32" width="10" height="10" rx="1" fill="#5a5a66" />
+              <rect x="16" y="58" width="68" height="8" fill="#070a14" />
+              <rect x="20" y="66" width="10" height="22" fill="#1c2233" />
+              <rect x="22" y="68" width="10" height="22" fill="#28314a" />
+              <rect x="70" y="66" width="10" height="22" fill="#121824" />
+              <rect x="68" y="68" width="10" height="22" fill="#1c2233" />
+              <rect x="32" y="78" width="36" height="12" fill="#ef5a5f" opacity="0.25" />
+              <rect x="28" y="86" width="44" height="8" rx="1" fill="#422815" />
+              <rect x="34" y="84" width="32" height="8" rx="1" fill="#52321a" />
+              <rect x="42" y="86" width="16" height="4" fill="#f2a641" />
+              <rect x="48" y="86" width="4" height="2" fill="#ffffff" />
+            </svg>
+          </div>
+
+
+          <!-- Quadruped Wildlife Backdrop Anchor -->
+          <svg class="bg-vector-fauna" viewBox="0 0 100 100" xmlns="http://w3.org" aria-hidden="true">
+            <polygon points="25,45 50,55 50,75 25,62" fill="#57944d" />
+            <polygon points="50,55 75,45 75,62 50,75" fill="#66aa58" />
+            <polygon points="35,35 50,41 65,35 50,30" fill="#388c38" />
+            <polygon points="32,26 50,33 50,21 32,16" fill="#e8ecf3" />
+            <polygon points="50,33 68,26 68,16 50,21" fill="#ffffff" />
+            <polygon points="42,27 50,30 50,26 42,23" fill="#ef5a5f" />
+            <polygon points="50,30 58,27 58,23 50,26" fill="#ef5a5f" />
+            <polygon points="30,60 38,62 38,84 30,80" fill="#57944d" />
+            <polygon points="62,62 70,60 70,80 62,84" fill="#388c38" />
+          </svg>
+
+
+
+
+          <!-- The Central Overview Console Grid -->
+          <div class="systems-grid-panel expanded-layout">
             
+            <!-- THE CRITICAL FIX: Planted directly inside the grid boundary wall so 
+                 it inherits the exact pixel line coordinates of your card borders -->
+            <svg class="bg-vector-rover" viewBox="0 0 160 120" xmlns="http://w3.org" aria-hidden="true">
+              <rect x="20" y="68" width="112" height="10" fill="#121829" />
+              <rect x="14" y="64" width="124" height="4" fill="#28314a" />
+              <rect x="20" y="34" width="112" height="30" fill="#bebebe" />
+              <rect x="24" y="36" width="104" height="26" fill="#e8ecf3" />
+              <rect x="10" y="44" width="10" height="16" fill="#9aa6b8" />
+              <rect x="6" y="48" width="4" height="6" fill="#5fd3b5" />
+              <rect x="28" y="40" width="20" height="12" fill="#3373d9" />
+              <rect x="54" y="40" width="20" height="12" fill="#3373d9" />
+              <rect x="80" y="40" width="16" height="12" fill="#1a2238" />
+              <rect x="110" y="24" width="22" height="10" fill="#1c2233" />
+              <rect x="112" y="22" width="18" height="2" fill="#f2a641" />
+              <rect x="48" y="28" width="44" height="6" fill="#9aa6b8" />
+              <rect x="68" y="16" width="2" height="12" fill="#e8ecf3" />
+              <rect x="84" y="10" width="1" height="18" fill="#9aa6b8" />
+              <rect x="30" y="74" width="24" height="24" fill="#070a12" />
+              <rect x="34" y="78" width="16" height="16" fill="#28314a" />
+              <rect x="40" y="84" width="4" height="4" fill="#9aa6b8" />
+              <rect x="68" y="74" width="24" height="24" fill="#070a12" />
+              <rect x="72" y="78" width="16" height="16" fill="#28314a" />
+              <rect x="78" y="84" width="4" height="4" fill="#9aa6b8" />
+              <rect x="106" y="74" width="24" height="24" fill="#070a12" />
+              <rect x="110" y="78" width="16" height="16" fill="#28314a" />
+              <rect x="116" y="84" width="4" height="4" fill="#9aa6b8" />
+            </svg>
+
             <!-- CARD 01: INDUSTRY -->
             <article class="console-card">
               <span class="label" style="color: var(--lamp);">01 // INDUSTRY</span>
@@ -895,30 +1110,68 @@
               <p>Progression is completely physical. You craft basic starter stations, place them down in the world, and interact with them to forge advanced materials. By linking machinery together with networks of ducts and pipes, you can route power, smelt raw ore, and completely automate your manufacturing setups and resource gathering.</p>
             </article>
 
-            <!-- CARD 02: AEROSPACE -->
+            <!-- CARD 02: SPACEFLIGHT & ROVERS -->
             <article class="console-card">
-              <span class="label" style="color: var(--lamp);">02 // ARCHITECTURE</span>
-              <h3>Block-by-Block Vessels</h3>
-              <p>Ships are never locked presets because they are completely free-form block construction projects. You build your fleet block-by-block, balancing vital survival systems and fuel lines against your own personal style and choice of materials. Mass matters, and your physical thruster placement dictates exactly how your vessel handles during deep space flights.</p>
+              <span class="label" style="color: var(--lamp);">02 // SPACEFLIGHT & ROVERS</span>
+              <h3>Vessels of Infinite Scale</h3>
+              <p>Vehicles are whatever you dare to create. You can spend your days wandering the soil of a single home world, forging hand-crafted Land Rovers to climb its peaks. Or, you can look upward and build a capital ship so gargantuan, so heavy, that it cannot be built on a planet at all—a drifting orbital mega-structure that you call home while exploring an endless galaxy, launching smaller, handmade shuttles down to alien shores to gather what you need before returning to the stars.</p>
             </article>
 
-            <!-- CARD 03: SURVIVAL -->
+            <article class="console-card" style="position: relative;">
+              <span class="label" style="color: var(--lamp);">03 // BIOSPHERE EXTRACT</span>
+              <h3>The Living Universe</h3>
+              <p>Worlds are never empty laboratories; they are breathing, unpredictable wildernesses. Survive by casting lines into unmapped planetary waters, holding tight against the fierce, erratic pulls of deep-water creatures where success relies entirely on your own focus and raw human attention. Out on the ridges, you can face the alien wildlife, capturing and taming strange procedural beasts to run your conveyor paths and guard your outposts, turning the planet's threats into the very heartbeat of your home.</p>
+              
+              <svg viewBox="0 0 32 32" xmlns="http://w3.org" fill="currentColor" style="position: absolute; right: 12px; bottom: 100%; width: 150px; height: 180px; color: #e8ecf3; pointer-events: none; z-index: 16; margin-bottom: -35px;">
+                <!-- Voxel Nose Cone -->
+                <polygon points="16,2 10,12 22,12" fill="#bebebe" />
+                <!-- Core Fuselage Block Shell -->
+                <rect x="10" y="12" width="12" height="16" fill="#e8ecf3" />
+                <!-- Tinted Voxel Flight Windows -->
+                <rect x="13" y="15" width="6" height="4" fill="#3373d9" />
+                <!-- Left Stabilizer Tail Fin -->
+                <polygon points="10,20 4,28 10,28" fill="#9aa6b8" />
+                <!-- Right Stabilizer Tail Fin -->
+                <polygon points="22,20 28,28 22,28" fill="#9aa6b8" />
+                <!-- Bottom Exhaust Heat Shield Gutter -->
+                <rect x="12" y="28" width="8" height="2" fill="#ff6b1a" />
+              </svg>
+            </article>
+
+            <!-- CARD 04: CAMPFIRE COOKING ENGINE -->
             <article class="console-card">
-              <span class="label" style="color: var(--lamp);">03 // SURVIVAL</span>
+              <span class="label" style="color: var(--lamp);">04 // BIOMASS // POT REFINERY</span>
+              <h3>Campfire Cooking Matrix</h3>
+              <p>Raw food yields negligible nourishment and risks wasting critical bars on sickness. To survive, combine up to five ingredients in a campfire pot to unlock real nutrition. Recipes remain hidden until discovered by hand, logging your history for future remakes. Cooked meals spike long-term saturation, freezing your hunger bar for deep exploration runs.</p>
+              <div class="recipe-flow-row">
+                <span>5x Identical Berries</span>
+                <span class="output">➔ Simple Berry Mash</span>
+              </div>
+              <div class="recipe-flow-row">
+                <span>1x Fish + 1x Crop + 3x Berries</span>
+                <span class="output">➔ Hearty Fish Stew</span>
+              </div>
+            </article>
+
+            <!-- CARD 05: SURVIVAL -->
+            <article class="console-card">
+              <span class="label" style="color: var(--lamp);">05 // SURVIVAL</span>
               <h3>Survival & Exploration</h3>
               <p>Every world introduces changing environmental hazards. Severe planetary cold can sap your spacesuit batteries rapidly, while scorched stones cook your armor layers. Surviving means adapting to unpredictable terrains where sand dunes slide under your boots, water shifts realistically to find its own level, and felled trees crash straight down to the ground.</p>
             </article>
 
-            <!-- CARD 04: NETWORK -->
+            <!-- CARD 06: NETWORK -->
             <article class="console-card">
-              <span class="label" style="color: var(--lamp);">04 // NETWORKING</span>
+              <span class="label" style="color: var(--lamp);">06 // NETWORKING</span>
               <h3>Cooperative Galaxies</h3>
               <p>Explore completely alone, open a quick local co-op session, or run a stable dedicated server for friends joining from anywhere. Network traffic remains lightweight and optimized, ensuring a crisp, seamless connection as your crew builds and explores together across the universe.</p>
             </article>
 
           </div>
+
         </div>
       </section>
+
 
       <!-- AFTER DARK -->
       <section id="after-dark" class="dark">
