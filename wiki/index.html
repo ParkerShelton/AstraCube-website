@@ -13,7 +13,7 @@
         --steel: #9aa6b8; --text: #e8ecf3; --lamp: #f2a641; --aurora: #5fd3b5;
         --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
       }
-      *, *::before, *::after { 
+      * { 
         box-sizing: border-box; 
       }
       body {
@@ -109,39 +109,38 @@
         .hub-directory-box { grid-template-columns: 1fr; }
       }
 
-      /* ---------- INDEPENDENT VIEWPORT BUG PANEL LAYER ---------- */
+      /* ---------- Floating Sci-Fi Bug Button (FIXED COMMENT SYNTAX) ---------- */
       .floating-bug-panel-btn {
         position: fixed;
         bottom: 24px;
         right: 24px;
-        z-index: 100010; /* Keeps it high on top of all page wrappers */
-        
-        /* Hard-coded pixel constraints lock down sizes so text-scaling never warps it */
-        width: 44px !important;
-        height: 44px !important;
-        min-width: 44px !important;
-        min-height: 44px !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        
-        background: #121829 !important;
-        border: 1px solid var(--steel) !important;
-        border-radius: 4px !important;
+        z-index: 100001; 
+        width: 40px;
+        height: 40px;
+        background: rgba(18, 24, 41, 0.95);
+        border: 1px solid var(--steel);
+        border-radius: 4px;
         cursor: pointer;
-        
-        /* Centralizes the inner SVG beetle precisely on a fixed axis */
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
-        transition: border-color 0.12s ease, box-shadow 0.12s ease !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
-      
       .floating-bug-panel-btn:hover {
-        border-color: var(--aurora) !important;
-        box-shadow: 0 0 12px rgba(95, 211, 181, 0.3) !important;
+        border-color: var(--aurora);
+        box-shadow: 0 0 12px rgba(95, 211, 181, 0.35);
       }
+      .floating-bug-panel-btn svg {
+        width: 24px;
+        height: 20px;
+        fill: none;
+        stroke: var(--text);
+        stroke-width: 1.5;
+        stroke-linecap: square;
+        transition: stroke 0.15s ease;
+      }
+      .floating-bug-panel-btn:hover svg { stroke: var(--aurora); }
 
     </style>
   </head>
