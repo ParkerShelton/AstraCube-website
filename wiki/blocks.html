@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Voxel Blocks Registry // AstraCube Wiki</title>
+    <title>Iron Ore Sheet // AstraCube Wiki</title>
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@500&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
@@ -11,161 +11,75 @@
       :root {
         --ink: #0b0f1a; --ink-2: #121829; --ink-3: #1a2238; --line: #28314a;
         --steel: #9aa6b8; --text: #e8ecf3; --lamp: #f2a641; --aurora: #5fd3b5;
-        --alarm: #ef5a5f; --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
+        --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
       }
-      * { 
-        box-sizing: border-box; 
-      }
-      body {
-        margin: 0; background: var(--ink); color: var(--text);
-        font: 400 1.0rem/1.6 "Atkinson Hyperlegible", sans-serif; -webkit-font-smoothing: antialiased;
-      }
-      
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--ink); color: var(--text); font: 400 1.0rem/1.6 "Atkinson Hyperlegible", sans-serif; -webkit-font-smoothing: antialiased; }
       .wiki-master-frame { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
-
-      /* ---------- STICKY NAVIGATION SIDEBAR ---------- */
-      .wiki-sidebar {
-        background: #070a12; border-right: 1px solid var(--line); position: sticky;
-        top: 0; height: 100vh; padding: 32px 24px; display: flex; flex-direction: column; gap: 32px; overflow-y: auto;
-      }
+      .wiki-sidebar { background: #070a12; border-right: 1px solid var(--line); position: sticky; top: 0; height: 100vh; padding: 32px 24px; display: flex; flex-direction: column; gap: 32px; overflow-y: auto; }
       .sidebar-brand { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--lamp); letter-spacing: 0.08em; text-decoration: none; border-bottom: 2px solid var(--line); padding-bottom: 12px; }
       .sidebar-menu-group { display: flex; flex-direction: column; gap: 8px; }
       .sidebar-menu-group label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; color: var(--steel); text-transform: uppercase; }
       .sidebar-links { display: flex; flex-direction: column; gap: 4px; padding: 0; margin: 0; list-style: none; }
-      .sidebar-links a { display: block; font-family: var(--display); font-weight: 500; font-size: 0.95rem; color: var(--steel); text-decoration: none; padding: 6px 10px; border-radius: 4px; transition: background 0.15s, color 0.15s; }
+      .sidebar-links a { display: flex; align-items: center; justify-content: space-between; font-family: var(--display); font-weight: 500; font-size: 0.95rem; color: var(--steel); text-decoration: none; padding: 6px 10px; border-radius: 4px; transition: background 0.15s, color 0.15s; }
       .sidebar-links a:hover { background: var(--ink-3); color: var(--text); }
       .sidebar-links a.active { background: rgba(95, 211, 181, 0.1); color: var(--aurora); border-left: 2px solid var(--aurora); border-radius: 0 4px 4px 0; }
       .sidebar-footer { margin-top: auto; font-family: var(--mono); font-size: 0.62rem; color: rgba(154,166,184,0.3); }
-
-      /* Workspace Configuration Layout */
       .wiki-workspace { padding: 40px 48px; max-width: 960px; }
       .wiki-breadcrumbs { font-family: var(--mono); font-size: 0.72rem; color: var(--steel); margin-bottom: 24px; display: flex; gap: 8px; }
       .wiki-breadcrumbs a { color: var(--steel); text-decoration: none; }
       .wiki-breadcrumbs a:hover { color: var(--text); }
-
       .wiki-hero { padding-block: 0 24px; border-bottom: 1px solid rgba(40, 49, 74, 0.4); margin-bottom: 32px; }
-      .wiki-hero h1 { font-family: var(--display); font-size: 2.5rem; margin: 0 0 12px 0; letter-spacing: 0.02em; line-height: 1.1; }
+      .wiki-hero h1 { font-family: var(--display); font-size: 2.2rem; margin: 0 0 8px 0; letter-spacing: 0.02em; }
       .label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aurora); }
       .sub { color: var(--steel); margin: 0; max-width: 65ch; }
-
-      /* ---------- TERMINAL DRILLDOWN PANEL MATRIX ---------- */
-      .wiki-view-panel { display: none; }
-      .wiki-view-panel.active-view { display: block; animation: terminalPulse 0.15s ease-out; }
-      @keyframes terminalPulse { from { opacity: 0.4; } to { opacity: 1; } }
-
-      .category-drill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-      .category-selection-card {
-        background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 24px;
-        cursor: pointer; display: grid; gap: 8px; text-align: left; transition: border-color 0.12s;
-      }
-      .category-selection-card:hover { border-color: var(--lamp); }
-      .category-selection-card h3 { font-family: var(--display); font-size: 1.2rem; margin: 0; color: var(--text); }
-      .category-selection-card p { color: var(--steel); font-size: 0.88rem; margin: 0; line-height: 1.5; }
-      .category-selection-card .drill-tag { font-family: var(--mono); font-size: 0.65rem; color: var(--lamp); text-transform: uppercase; margin-top: 4px; }
-
-      .voxel-matrix-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
-      .voxel-interactive-row {
-        background: var(--ink-2); border: 1px solid var(--line); padding: 16px 20px; border-radius: 4px;
-        display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.12s;
-      }
-      .voxel-interactive-row:hover { background: var(--ink-3); border-color: var(--aurora); }
-      .voxel-name-block { display: flex; flex-direction: column; gap: 2px; }
-      .voxel-name-block .v-title { font-family: var(--display); font-weight: 600; font-size: 1.05rem; color: var(--text); }
-      .voxel-name-block .v-id { font-family: var(--mono); font-size: 0.68rem; color: var(--steel); }
-      .inspect-btn { font-family: var(--mono); font-size: 0.7rem; color: var(--aurora); text-transform: uppercase; border: 1px solid rgba(95, 211, 181, 0.2); padding: 4px 8px; border-radius: 2px; }
-
-      .back-drill-link { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 0.75rem; color: var(--steel); cursor: pointer; margin-bottom: 20px; text-transform: uppercase; }
-      .back-drill-link:hover { color: var(--text); }
-
-
-      /* ---------- TELEMETRY DIAGNOSTIC MODALS ---------- */
-      .telemetry-modal { position: fixed; inset: 0; z-index: 100005; background: rgba(7, 10, 18, 0.85); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
-      .telemetry-modal.active-modal { opacity: 1; pointer-events: auto; }
-      .telemetry-box { background: #060a14; border: 1px solid var(--line); border-radius: 4px; width: 100%; max-width: 580px; padding: 32px; position: relative; display: grid; gap: 24px; }
-      .telemetry-box h2 { font-family: var(--display); font-size: 1.5rem; color: var(--text); margin: 0; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
-      .telemetry-close-btn { position: absolute; top: 16px; right: 20px; background: transparent; border: none; color: var(--steel); font-family: var(--mono); font-size: 1.0rem; cursor: pointer; }
-      .telemetry-close-btn:hover { color: var(--alarm); }
-      .modal-spec-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.85rem; }
-      .modal-spec-table tr { border-bottom: 1px solid rgba(40, 49, 74, 0.3); }
-      .modal-spec-table tr:last-child { border-bottom: 0; }
-      .modal-spec-table td { padding-block: 10px; }
-      .modal-spec-table td.p-lbl { color: var(--steel); text-transform: uppercase; font-size: 0.72rem; width: 45%; }
-      .modal-spec-table td.p-val { color: var(--text); font-weight: 500; text-align: right; }
-
-      @media (max-width: 860px) {
-        .wiki-master-frame { grid-template-columns: 1fr; }
-        .wiki-sidebar { height: auto; position: relative; padding: 24px; }
-        .wiki-workspace { padding: 32px 24px; }
-        .category-drill-grid, .voxel-matrix-list { grid-template-columns: 1fr; }
-      }
-
-      /* ---------- Floating Sci-Fi Bug Button (FIXED COMMENT SYNTAX) ---------- */
-      .floating-bug-panel-btn {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        z-index: 100001; 
-        width: 40px;
-        height: 40px;
-        background: rgba(18, 24, 41, 0.95);
-        border: 1px solid var(--steel);
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-      }
-      .floating-bug-panel-btn:hover {
-        border-color: var(--aurora);
-        box-shadow: 0 0 12px rgba(95, 211, 181, 0.35);
-      }
-      .floating-bug-panel-btn svg {
-        width: 24px;
-        height: 20px;
-        fill: none;
-        stroke: var(--text);
-        stroke-width: 1.5;
-        stroke-linecap: square;
-        transition: stroke 0.15s ease;
-      }
-      .floating-bug-panel-btn:hover svg { stroke: var(--aurora); }
-
+      .block-entry-section { padding-block: 12px 48px; }
+      .block-profile-grid { display: grid; grid-template-columns: 1fr 1.8fr; gap: 48px; align-items: start; }
+      .block-visual-box { display: grid; gap: 16px; }
+      .block-cube-frame { width: 100%; aspect-ratio: 1 / 1; background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: inset 0 0 24px rgba(0,0,0,0.4); }
+      .voxel-mock-art { width: 45%; height: 45%; border: 3px solid currentColor; transform: rotate(-15deg) skewX(10deg); }
+      .block-cube-frame .id-badge { position: absolute; bottom: 12px; left: 14px; font-family: var(--mono); font-size: 0.65rem; color: var(--steel); }
+      .block-visual-box h2 { font-family: var(--display); font-size: 1.75rem; color: var(--text); margin: 0; }
+      .block-visual-box p { color: var(--steel); font-size: 0.95rem; margin: 0; line-height: 1.6; }
+      .version-stamp { display: inline-block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(242, 166, 65, 0.1); border: 1px solid rgba(242, 166, 65, 0.25); color: var(--lamp); padding: 2px 8px; border-radius: 2px; align-self: start; }
+      .block-specs-ledger { display: grid; gap: 24px; }
+      .specs-group-card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
+      .specs-group-card h3 { font-family: var(--display); font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--lamp); margin: 0 0 16px 0; border-bottom: 1px solid rgba(40,49,74,0.3); padding-bottom: 6px; }
+      .spec-data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; font-family: var(--mono); }
+      .spec-data-table tr { border-bottom: 1px solid rgba(40, 49, 74, 0.25); }
+      .spec-data-table tr:last-child { border-bottom: 0; }
+      .spec-data-table td { padding-block: 8px; vertical-align: top; }
+      .spec-data-table td.property-name { color: var(--steel); width: 40%; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.04em; }
+      .spec-data-table td.property-value { color: var(--text); font-weight: 500; text-align: right; }
+      .recipe-matrix-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 12px; }
+      .recipe-card { background: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 20px; }
+      .recipe-card h4 { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aurora); margin: 0 0 12px 0; border-bottom: 1px solid rgba(95, 211, 181, 0.15); padding-bottom: 6px; }
+      .recipe-flow-row { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 0.8rem; padding-block: 6px; border-bottom: 1px dashed rgba(154, 166, 184, 0.15); }
+      .recipe-flow-row:last-child { border-bottom: 0; }
+      .recipe-ingredients { color: var(--steel); }
+      .recipe-result { color: var(--text); font-weight: 500; }
+      .recipe-result.target-highlight { color: var(--lamp); }
+      @media (max-width: 860px) { .wiki-master-frame { grid-template-columns: 1fr; } .wiki-sidebar { height: auto; position: relative; padding: 24px; } .wiki-workspace { padding: 32px 24px; } .block-profile-grid { grid-template-columns: 1fr; gap: 32px; } .recipe-matrix-panel { grid-template-columns: 1fr; gap: 16px; } }
     </style>
   </head>
   <body>
-
     <div class="wiki-master-frame">
       <aside class="wiki-sidebar">
         <a class="sidebar-brand" href="/wiki/">ASTRACUBE // VISOR_OS</a>
         <nav class="sidebar-menu-group">
           <label>Core Manual Registries</label>
           <ul class="sidebar-links">
-            <!-- FIXED: Visual square block indicator matches your white pixel bug icon syntax -->
             <li>
-                <a href="/wiki/">
-                    <span>Database Index</span>
-                    <!-- THE REAL FIX: Embedded an actual 16-bit pixel house icon on the right edge -->
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="color: var(--lamp); flex-shrink: 0; margin-left: 8px; align-self: center;">
-                        <!-- Roof Grid Layers -->
-                        <rect x="7" y="2" width="2" height="2" />
-                        <rect x="5" y="4" width="6" height="2" />
-                        <rect x="3" y="6" width="10" height="2" />
-                        <!-- Main Outer Walls -->
-                        <rect x="2" y="8" width="12" height="2" />
-                        <rect x="2" y="10" width="3" height="4" />
-                        <rect x="11" y="10" width="3" height="4" />
-                        <!-- Door Header Beam -->
-                        <rect x="5" y="10" width="6" height="1" />
-                        <!-- THE FIX: Thickened 2px solid foundation base blocks anchor the model cleanly -->
-                        <rect x="2" y="12" width="12" height="2" />
-                    </svg>
-                </a>
+              <a id="nav-index" href="/wiki/">
+                <span>Database Index</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="color: var(--lamp); flex-shrink: 0; margin-left: 8px; align-self: center;">
+                  <rect x="7" y="2" width="2" height="2" /><rect x="5" y="4" width="6" height="2" /><rect x="3" y="6" width="10" height="2" /><rect x="2" y="8" width="12" height="2" /><rect x="2" y="10" width="3" height="4" /><rect x="11" y="10" width="3" height="4" /><rect x="5" y="10" width="6" height="1" /><rect x="2" y="12" width="12" height="2" />
+                </svg>
+              </a>
             </li>
-            <li><a class="active" href="/wiki/blocks.html">Voxel Blocks Registry</a></li>
-            <li><a href="/wiki/blueprints.html">Tools & Assembly</a></li>
-            <li><a href="/wiki/planets.html">Planetary Catalog</a></li>
+            <li><a id="nav-blocks" class="active" href="/wiki/blocks.html">Voxel Blocks Registry</a></li>
+            <li><a id="nav-blueprints" href="/wiki/blueprints.html">Tools & Assembly</a></li>
+            <li><a id="nav-planets" href="/wiki/planets.html">Planetary Catalog</a></li>
           </ul>
         </nav>
         <nav class="sidebar-menu-group">
@@ -176,210 +90,64 @@
         </nav>
         <div class="sidebar-footer">AstraCube Data Node<br>Version v0.42 // Godot 4.3</div>
       </aside>
-
       <main class="wiki-workspace">
-        <nav class="wiki-breadcrumbs" id="live-breadcrumbs">
-          <a href="/">Home</a> ➔ <a href="/wiki/">Wiki Hub</a> ➔ <a href="/wiki/blocks.html">Voxel Blocks Registry</a>
+        <nav class="wiki-breadcrumbs">
+          <a href="/">Home</a> ➔ <a href="/wiki/">Wiki Hub</a> ➔ <a href="/wiki/blocks.html">Voxel Blocks Registry</a> ➔ <span style="color: var(--lamp); font-family: var(--mono); font-size: 0.72rem;">Iron Ore Crust</span>
         </nav>
-        <!-- VIEW 1: MASTER CATEGORY HUB (BROAD OVERVIEW FIRST) -->
-        <div class="wiki-view-panel active-view" id="panel-category-hub">
-          <div class="wiki-hero">
-            <span class="label">Visor OS // Material Indexes</span>
-            <h1>Voxel Blocks Registry</h1>
-            <p class="sub">Select a primary structural block family profile below to inspect individual material rules, procedural ore variables, or environmental generation parameters.</p>
-          </div>
-          
-          <div class="category-drill-grid">
-            <div class="category-selection-card" onclick="switchTerminalView('panel-natural-voxels')">
-              <h3>Natural Soil & Surface Blocks</h3>
-              <p>Data ledgers tracking raw planetary environment voxels gathered directly by hand tools, picks, or shovels.</p>
-              <span class="drill-tag">Open Structural Registry »</span>
-            </div>
-
-            <div class="category-selection-card" onclick="switchTerminalView('panel-procedural-ores')">
-              <h3>Procedural Generation Ores</h3>
-              <p>Examine the system attributes and properties assigned to algorithmic metals generated at runtime by planet seeds.</p>
-              <span class="drill-tag">Open Ore Ledger Array »</span>
-            </div>
-
-            <div class="category-selection-card" onclick="switchTerminalView('panel-crafted-blocks')">
-              <h3>Player-Placeable Modules</h3>
-              <p>Review engineering tolerances for manufactured starship hulls, structural slabs, and cockpit seat modules.</p>
-              <span class="drill-tag">Open Fabrication Catalog »</span>
-            </div>
-          </div>
+        <div class="wiki-hero">
+          <span class="label">Registry Matrix // Sub-Directory 01</span>
+          <h1>Voxel Blocks Registry</h1>
+          <p class="sub">Comprehensive technical datasheets tracking mining tools, processing recipes, and physical parameters for all materials.</p>
         </div>
-        <!-- VIEW 2: NATURAL SOIL & SURFACE BLOCKS -->
-        <div class="wiki-view-panel" id="panel-natural-voxels">
-          <div class="back-drill-link" onclick="switchTerminalView('panel-category-hub')">« Back To Registry Hub</div>
-          <div class="wiki-hero">
-            <span class="label">Voxel Registry Track // Natural</span>
-            <h1>Natural Surface Blocks</h1>
-            <p class="sub">Raw terrain blocks generated at world-build phase. Click any matrix layer entry card below to query real-time hardware telemetry values.</p>
-          </div>
-          <div class="voxel-matrix-list">
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Rock Crust', 'Blocks.ROCK (1)', '0.9 seconds', '1.0 (Bare Hands / Pick)', 'Is Natural Layer // Found across all planet archetypes as foundational bedrock material stock. Mined with rock class tools.')">
-              <div class="voxel-name-block"><span class="v-title">Rock Crust</span><span class="v-id">Blocks.ROCK // ID: 1</span></div>
-              <span class="inspect-btn">Query Specs</span>
+        <section class="block-entry-section">
+          <div class="block-profile-grid">
+            <div class="block-visual-box">
+              <div class="block-cube-frame">
+                <div class="voxel-mock-art" style="color: #6e7a8c;"></div>
+                <span class="id-badge">REGISTRY_ID // #0012_FERRUM</span>
+              </div>
+              <h2>Iron Ore Crust</h2>
+              <span class="version-stamp">DEPLOY_TAG // ADDED_V0.12_ALPHA</span>
+              <p>A dense, heavy metallic cluster found inside impact craters. Forms the primary foundation asset for early logistics grids, conveyor channels, and frame plates.</p>
             </div>
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Soil Dirt', 'Blocks.DIRT (2)', '0.35 seconds', '1.0 (Bare Hands / Spade)', 'Is Natural Layer // Standard loose topsoil material layer. Mined with soil class tools.')">
-              <div class="voxel-name-block"><span class="v-title">Soil Dirt</span><span class="v-id">Blocks.DIRT // ID: 2</span></div>
-              <span class="inspect-btn">Query Specs</span>
-            </div>
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Glacial Ice Voxel', 'Blocks.ICE (5)', '0.7 seconds', '1.0 (Bare Hands / Pick)', 'Is Natural Layer // Frozen surface layer tracking. Melting flashpoints bound by global coordinates thermal scripts.')">
-              <div class="voxel-name-block"><span class="v-title">Glacial Ice</span><span class="v-id">Blocks.ICE // ID: 5</span></div>
-              <span class="inspect-btn">Query Specs</span>
-            </div>
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Desert Sandstone', 'Blocks.SANDSTONE (249)', '0.75 seconds', '1.0 (Bare Hands / Pick)', 'Is Natural Layer // Dense sediment block. Solid structure — does not fall under active gravity load ticks.')">
-              <div class="voxel-name-block"><span class="v-title">Sandstone Voxel</span><span class="v-id">Blocks.SANDSTONE // ID: 249</span></div>
-              <span class="inspect-btn">Query Specs</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIEW 3: PROCEDURAL ORE BLOCKS -->
-        <div class="wiki-view-panel" id="panel-procedural-ores">
-          <div class="back-drill-link" onclick="switchTerminalView('panel-category-hub')">« Back To Registry Hub</div>
-          <div class="wiki-hero">
-            <span class="label">Voxel Registry Track // Ores</span>
-            <h1>Procedural Generation Ores</h1>
-            <p class="sub">These placeholders map individual voxel data coordinates directly to your planet's algorithmic seed properties.</p>
-          </div>
-          <div class="voxel-matrix-list">
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Procedural Ore Slot 0', 'Blocks.ORE_0 (43)', '1.0s (Base T0 Minimum)', '1.0 (Bare Hands)', 'Procedural Matrix Node // Mapped to planet seeds. Common suffixes default to: -ite / -ar / -ide / -ash / -stone / -grit. Universal properties handle Hardness, Density, Energy, Reactivity, and Combustion loops.')">
-              <div class="voxel-name-block"><span class="v-title">Ore Slot 0 [Common Base]</span><span class="v-id">Blocks.ORE_0 // ID: 43</span></div>
-              <span class="inspect-btn">Query Specs</span>
-            </div>
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Procedural Ore Slot 3', 'Blocks.ORE_3 (46)', '2.8s (Base T3 Minimum)', '2.4 (Requires Drills)', 'Procedural Matrix Node // Mapped to planet seeds. Exotic suffixes default to: -ax / -yx / -arch / -ovar / -helion / -core. Demands high-grade drill platforms to extract.')">
-              <div class="voxel-name-block"><span class="v-title">Ore Slot 3 [Exotic Base]</span><span class="v-id">Blocks.ORE_3 // ID: 46</span></div>
-              <span class="inspect-btn">Query Specs</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIEW 4: PLAYER-PLACEABLE MODULES -->
-        <div class="wiki-view-panel" id="panel-crafted-blocks">
-          <div class="back-drill-link" onclick="switchTerminalView('panel-category-hub')">« Back To Registry Hub</div>
-          <div class="wiki-hero">
-            <span class="label">Voxel Registry Track // Fabrication</span>
-            <h1>Player-Placeable Modules</h1>
-            <p class="sub">Manufactured components engineered at specialized utility stations. Cannot be gathered naturally.</p>
-          </div>
-          <div class="voxel-matrix-list">
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Reinforced Metal Hull', 'Blocks.METAL (10)', '0.25 seconds', 'Requires Tools (Hands Blocked)', 'Fabricated Component // Pressed out of 4x Plates at the Forge Press. Starship hull stock module. Bare hands cannot break.')">
-              <div class="voxel-name-block"><span class="v-title">Metal Hull Plate</span><span class="v-id">Blocks.METAL // ID: 10</span></div>
-              <span class="inspect-btn">Query Specs</span>
-            </div>
-            <div class="voxel-interactive-row" onclick="openTelemetryModal('Sealed Flight Cockpit', 'Blocks.COCKPIT (11)', '0.25 seconds', 'Requires Tools (Hands Blocked)', 'Fabricated Component // Ship control seat. A functional vessel infrastructure array needs exactly one active cockpit to engage engines.')">
-              <div class="voxel-name-block"><span class="v-title">Vessel Cockpit Seat</span><span class="v-id">Blocks.COCKPIT // ID: 11</span></div>
-              <span class="inspect-btn">Query Specs</span>
+            <div class="block-specs-ledger">
+              <div class="specs-group-card">
+                <h3>1. Structural Parameters</h3>
+                <table class="spec-data-table">
+                  <tr>
+                    <td class="property-name">Hardness Tier</td>
+                    <td class="property-value" style="color: var(--aurora);">TIER_02 [REINFORCED]</td>
+                  </tr>
+                  <tr>
+                    <td class="property-name">Required Tool</td>
+                    <td class="property-value">Pneumatic Breaker</td>
+                  </tr>
+                  <tr>
+                    <td class="property-name">Base Mass</td>
+                    <td class="property-value">7.84 kg / block</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="recipe-matrix-panel">
+                <div class="recipe-card">
+                  <h4>Recipes Used To Build This Item</h4>
+                  <div class="recipe-flow-row">
+                    <span class="recipe-ingredients">3x Loose Iron Pebbles</span>
+                    <span class="recipe-result target-highlight">➔ 1x Iron Crust</span>
+                  </div>
+                </div>
+                <div class="recipe-card">
+                  <h4>Recipes This Item Is Used In</h4>
+                  <div class="recipe-flow-row">
+                    <span class="recipe-ingredients">1x Iron Crust (Smelter)</span>
+                    <span class="recipe-result">➔ 3x Refined Iron Plates</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-      </main> <!-- Closes wiki-workspace container -->
-    </div> <!-- Closes wiki-master-frame layout split -->
-
-    <!-- ---------- TELEMETRY INSPECTION DIAGNOSTIC MODAL ---------- -->
-    <div class="telemetry-modal" id="visor-telemetry-modal">
-      <div class="telemetry-box">
-        <button class="telemetry-close-btn" onclick="closeTelemetryModal()">[ESC] CLOSE_LOG</button>
-        <span class="label" style="color: var(--lamp);">Visor Diagnostic // Micro-Telemetry Log</span>
-        <h2 id="m-block-name">Voxel Node Name</h2>
-        
-        <table class="modal-spec-table">
-          <tr>
-            <td class="p-lbl">System Asset Registry Hook</td>
-            <td class="p-val" id="m-block-id" style="color: var(--aurora);">Blocks.KEY_ID</td>
-          </tr>
-          <tr>
-            <td class="p-lbl">Base Core Mine Duration</td>
-            <td class="p-val" id="m-block-hardness">0.00s</td>
-          </tr>
-          <tr>
-            <td class="p-lbl">Minimum Tool Power Required</td>
-            <td class="p-val" id="m-block-tool">Hands / Starter</td>
-          </tr>
-          <tr>
-            <td class="p-lbl">Engine Operational Specification</td>
-            <td class="p-val" id="m-block-desc" style="text-align: left; font-size: 0.85rem; color: var(--steel); line-height: 1.5;">Description rows.</td>
-          </tr>
-        </table>
-      </div>
+        </section>
+      </main>
     </div>
-
-    <!-- ---------- PERSISTENT MULTI-PAGE HUD ACCESS OVERLAY ---------- -->
-    <button class="floating-bug-panel-btn" id="hud-bug-shortcut" title="Transmit feedback" aria-label="Open feedback modal" onclick="alert('CONSOLE: Bug reporting network uplink initialized...');">
-      <!-- FIXED WIREFRAME BEETLE MATRIX: Enforces transparent fills and explicit stroke outlines -->
-      <svg viewBox="0 0 24 20" aria-hidden="true">
-        <!-- Core Shell Carapace Hull -->
-        <rect x="9" y="6" width="6" height="10" stroke-width="1.5" />
-        <rect x="8" y="7" width="8" height="8" stroke-width="1.5" />
-        
-        <!-- Wing Split Score Lines -->
-        <line x1="9" y1="10" x2="15" y2="10" stroke-width="1" />
-        <line x1="12" y1="10" x2="12" y2="15" stroke-width="1" />
-        
-        <!-- Antenna Tips -->
-        <rect x="10" y="3" width="2" height="3" fill="currentColor" stroke-width="1" />
-        <rect x="13" y="3" width="2" height="3" fill="currentColor" stroke-width="1" />
-        
-        <!-- Forward-Jointed Angled Limbs -->
-        <path d="M 8,8 L 5,6 M 8,10 L 4,10 M 8,12 L 5,14" stroke-width="1.5" fill="none" />
-        <path d="M 16,8 L 19,6 M 16,10 L 20,10 M 16,12 L 19,14" stroke-width="1.5" fill="none" />
-      </svg>
-    </button>
-
-
-
-
-    <!-- ---------- VISOR OS DYNAMIC TERMINAL RUNNER ---------- -->
-    <script>
-      function switchTerminalView(panelId) {
-        // Hide all active tracking view panels instantly
-        document.querySelectorAll('.wiki-view-panel').forEach(panel => {
-          panel.classList.remove('active-view');
-        });
-        
-        // Wake up our targeted dashboard view panel selection
-        const activePanel = document.getElementById(panelId);
-        if (activePanel) activePanel.classList.add('active-view');
-
-        // Dynamically append text trackers straight onto the breadcrumb string layout
-        const crumbs = document.getElementById('live-breadcrumbs');
-        const baseTrack = '<a href="/">Home</a> ➔ <a href="/wiki/">Wiki Hub</a> ➔ <a href="/wiki/blocks.html" onclick="switchTerminalView(\'panel-category-hub\'); return false;">Voxel Blocks Registry</a>';
-        
-        if (panelId === 'panel-category-hub') {
-          crumbs.innerHTML = baseTrack;
-        } else {
-          let sectionLabel = "";
-          if (panelId === 'panel-natural-voxels') sectionLabel = "Natural Terrain";
-          if (panelId === 'panel-procedural-ores') sectionLabel = "Procedural Ores";
-          if (panelId === 'panel-crafted-blocks') sectionLabel = "Fabricated Modules";
-          
-          crumbs.innerHTML = baseTrack + ` ➔ <span style="color: var(--lamp); font-family: var(--mono); font-size: 0.72rem;">${sectionLabel}</span>`;
-        }
-      }
-
-      function openTelemetryModal(name, id, hardness, tool, desc) {
-        document.getElementById('m-block-name').textContent = name;
-        document.getElementById('m-block-id').textContent = id;
-        document.getElementById('m-block-hardness').textContent = hardness;
-        document.getElementById('m-block-tool').textContent = tool;
-        document.getElementById('m-block-desc').textContent = desc;
-
-        document.getElementById('visor-telemetry-modal').classList.add('active-modal');
-      }
-
-      function closeTelemetryModal() {
-        document.getElementById('visor-telemetry-modal').classList.remove('active-modal');
-      }
-
-      // Track physical escape hardware strikes to dismiss popups comfortably
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeTelemetryModal();
-      });
-    </script>
-
   </body>
 </html>

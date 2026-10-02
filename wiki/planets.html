@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Voxel Blocks Registry // AstraCube Wiki</title>
+    <title>Planetary Catalog // AstraCube Wiki</title>
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@500&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
@@ -11,133 +11,254 @@
       :root {
         --ink: #0b0f1a; --ink-2: #121829; --ink-3: #1a2238; --line: #28314a;
         --steel: #9aa6b8; --text: #e8ecf3; --lamp: #f2a641; --aurora: #5fd3b5;
-        --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
+        --alarm: #ef5a5f; --display: "Chakra Petch", sans-serif; --mono: "JetBrains Mono", monospace;
       }
       * { box-sizing: border-box; }
-      body {
-        margin: 0; background: var(--ink); color: var(--text);
-        font: 400 1.0rem/1.6 "Atkinson Hyperlegible", sans-serif; -webkit-font-smoothing: antialiased;
-      }
-      .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 32px; }
-      
-      header { border-bottom: 1px solid var(--line); background: #070a12; padding-block: 16px; }
-      .nav-bar { display: flex; justify-content: space-between; align-items: center; }
-      .wiki-title { font-family: var(--display); font-weight: 700; color: var(--lamp); letter-spacing: 0.08em; text-decoration: none; }
-      .wiki-nav-links { display: flex; gap: 24px; font-family: var(--mono); font-size: 0.75rem; }
-      .wiki-nav-links a { color: var(--steel); text-decoration: none; }
-      .wiki-nav-links a:hover, .wiki-nav-links a.active { color: var(--text); }
-
-      .wiki-hero { padding-block: 48px 24px; border-bottom: 1px solid rgba(40, 49, 74, 0.4); }
-      .wiki-hero h1 { font-family: var(--display); font-size: 2.2rem; margin: 0 0 8px 0; letter-spacing: 0.02em; }
+      body { margin: 0; background: var(--ink); color: var(--text); font: 400 1.0rem/1.6 "Atkinson Hyperlegible", sans-serif; -webkit-font-smoothing: antialiased; }
+      .wiki-master-frame { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+      .wiki-sidebar { background: #070a12; border-right: 1px solid var(--line); position: sticky; top: 0; height: 100vh; padding: 32px 24px; display: flex; flex-direction: column; gap: 32px; overflow-y: auto; }
+      .sidebar-brand { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--lamp); letter-spacing: 0.08em; text-decoration: none; border-bottom: 2px solid var(--line); padding-bottom: 12px; }
+      .sidebar-menu-group { display: flex; flex-direction: column; gap: 8px; }
+      .sidebar-menu-group label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; color: var(--steel); text-transform: uppercase; }
+      .sidebar-links { display: flex; flex-direction: column; gap: 4px; padding: 0; margin: 0; list-style: none; }
+      .sidebar-links a { display: flex; align-items: center; justify-content: space-between; font-family: var(--display); font-weight: 500; font-size: 0.95rem; color: var(--steel); text-decoration: none; padding: 6px 10px; border-radius: 4px; transition: background 0.15s, color 0.15s; }
+      .sidebar-links a:hover { background: var(--ink-3); color: var(--text); }
+      .sidebar-links a.active { background: rgba(95, 211, 181, 0.1); color: var(--aurora); border-left: 2px solid var(--aurora); border-radius: 0 4px 4px 0; }
+      .sidebar-footer { margin-top: auto; font-family: var(--mono); font-size: 0.62rem; color: rgba(154,166,184,0.3); }
+      .wiki-workspace { padding: 40px 48px; max-width: 960px; }
+      .wiki-breadcrumbs { font-family: var(--mono); font-size: 0.72rem; color: var(--steel); margin-bottom: 24px; display: flex; gap: 8px; }
+      .wiki-breadcrumbs a { color: var(--steel); text-decoration: none; }
+      .wiki-breadcrumbs a:hover { color: var(--text); }
+      .wiki-hero { padding-block: 0 24px; border-bottom: 1px solid rgba(40, 49, 74, 0.4); margin-bottom: 32px; }
+      .wiki-hero h1 { font-family: var(--display); font-size: 2.5rem; margin: 0 0 12px 0; letter-spacing: 0.02em; line-height: 1.1; }
       .label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aurora); }
       .sub { color: var(--steel); margin: 0; max-width: 65ch; }
-
-      .block-entry-section { padding-block: 48px; }
-      .block-entry-section + .block-entry-section { border-top: 1px solid var(--line); }
-      .block-profile-grid { display: grid; grid-template-columns: 1fr 1.8fr; gap: 48px; align-items: start; }
       
-      .block-visual-box { display: grid; gap: 16px; }
-      .block-cube-frame {
-        width: 100%; aspect-ratio: 1 / 1; background: var(--ink-2); border: 1px solid var(--line);
-        border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;
-        box-shadow: inset 0 0 24px rgba(0,0,0,0.4);
-      }
-      .voxel-mock-art { width: 45%; height: 45%; border: 3px solid currentColor; transform: rotate(-15deg) skewX(10deg); }
-      .block-cube-frame .id-badge { position: absolute; bottom: 12px; left: 14px; font-family: var(--mono); font-size: 0.65rem; color: var(--steel); }
+      /* Planet Archetype Log Layout Elements */
+      .planet-entry-section { padding-block: 12px 48px; }
+      .planet-entry-section + .planet-entry-section { border-top: 1px solid var(--line); }
+      .planet-profile-grid { display: grid; grid-template-columns: 1fr 1.8fr; gap: 48px; align-items: start; }
+      .planet-visual-box { display: grid; gap: 16px; }
+      .planet-cube-frame { width: 100%; aspect-ratio: 1 / 1; background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: inset 0 0 24px rgba(0,0,0,0.4); }
       
-      .block-visual-box h2 { font-family: var(--display); font-size: 1.75rem; color: var(--text); margin: 0; }
-      .block-visual-box p { color: var(--steel); font-size: 0.95rem; margin: 0; line-height: 1.6; }
+      /* Pure CSS 2.5D Isometric Wireframe Cube Graphic */
+      .cube-iso-dec { width: 40%; height: 40%; position: relative; transform: rotateX(60deg) rotateZ(45deg); transform-style: preserve-3d; }
+      .cube-iso-dec div { position: absolute; width: 100%; height: 100%; border: 2px solid currentColor; background: rgba(26, 34, 56, 0.4); }
+      .cube-face-top { transform: translateZ(30px); }
+      .cube-face-front { transform: rotateY(90deg) translateX(-15px); transform-origin: center left; }
+      .cube-face-side { transform: rotateX(-90deg) translateY(15px); transform-origin: bottom center; }
 
-      .version-stamp {
-        display: inline-block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
-        background: rgba(242, 166, 65, 0.1); border: 1px solid rgba(242, 166, 65, 0.25); color: var(--lamp);
-        padding: 2px 8px; border-radius: 2px; align-self: start;
-      }
+      .planet-visual-box h2 { font-family: var(--display); font-size: 1.75rem; color: var(--text); margin: 0; }
+      .planet-visual-box p { color: var(--steel); font-size: 0.95rem; margin: 0; line-height: 1.6; }
+      .family-badge { display: inline-block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; align-self: start; }
+      .family-badge.dust { background: rgba(242, 166, 65, 0.1); border: 1px solid rgba(242, 166, 65, 0.25); color: var(--lamp); }
+      .family-badge.verdant { background: rgba(95, 211, 181, 0.1); border: 1px solid rgba(95, 211, 181, 0.25); color: var(--aurora); }
+      .family-badge.frozen { background: rgba(168, 214, 242, 0.1); border: 1px solid rgba(168, 214, 242, 0.25); color: #a8d6f2; }
+      .family-badge.scorched { background: rgba(239, 90, 95, 0.1); border: 1px solid rgba(239, 90, 95, 0.25); color: var(--alarm); }
 
-      .block-specs-ledger { display: grid; gap: 24px; }
+      .planet-specs-ledger { display: grid; gap: 24px; }
       .specs-group-card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
       .specs-group-card h3 { font-family: var(--display); font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--lamp); margin: 0 0 16px 0; border-bottom: 1px solid rgba(40,49,74,0.3); padding-bottom: 6px; }
-      
       .spec-data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; font-family: var(--mono); }
       .spec-data-table tr { border-bottom: 1px solid rgba(40, 49, 74, 0.25); }
       .spec-data-table tr:last-child { border-bottom: 0; }
       .spec-data-table td { padding-block: 8px; vertical-align: top; }
-      .spec-data-table td.property-name { color: var(--steel); width: 40%; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.04em; }
+      .spec-data-table td.property-name { color: var(--steel); width: 45%; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.04em; }
       .spec-data-table td.property-value { color: var(--text); font-weight: 500; text-align: right; }
-
-      .recipe-matrix-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 12px; }
-      .recipe-card { background: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 20px; }
-      .recipe-card h4 { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aurora); margin: 0 0 12px 0; border-bottom: 1px solid rgba(95, 211, 181, 0.15); padding-bottom: 6px; }
-      .recipe-flow-row { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 0.8rem; padding-block: 6px; border-bottom: 1px dashed rgba(154, 166, 184, 0.15); }
-      .recipe-flow-row:last-child { border-bottom: 0; }
-      .recipe-ingredients { color: var(--steel); }
-      .recipe-result { color: var(--text); font-weight: 500; }
-      .recipe-result.target-highlight { color: var(--lamp); }
-
-      footer { border-top: 1px solid var(--line); padding-block: 24px; color: rgba(154,166,184,0.3); font-family: var(--mono); font-size: 0.68rem; text-align: center; }
-      @media (max-width: 860px) { .block-profile-grid { grid-template-columns: 1fr; gap: 32px; } .recipe-matrix-panel { grid-template-columns: 1fr; gap: 16px; } }
+      
+      .composition-panel { background: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 20px; margin-top: 12px; }
+      .composition-panel h4 { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aurora); margin: 0 0 12px 0; border-bottom: 1px solid rgba(95, 211, 181, 0.15); padding-bottom: 6px; }
+      .composition-row { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 0.8rem; padding-block: 6px; border-bottom: 1px dashed rgba(154, 166, 184, 0.15); }
+      .composition-row:last-child { border-bottom: 0; }
+      .comp-layer { color: var(--steel); text-transform: uppercase; font-size: 0.72rem; }
+      .comp-block { color: var(--text); font-weight: 500; }
+      
+      @media (max-width: 860px) { .wiki-master-frame { grid-template-columns: 1fr; } .wiki-sidebar { height: auto; position: relative; padding: 24px; } .wiki-workspace { padding: 32px 24px; } .planet-profile-grid { grid-template-columns: 1fr; gap: 32px; } }
     </style>
   </head>
   <body>
-    <header>
-      <div class="wrap nav-bar">
-        <a class="wiki-title" href="/wiki/">ASTRACUBE // VISOR_WIKI</a>
-        <div class="wiki-nav-links">
-          <a class="active" href="/wiki/blocks.html">BLOCKS</a>
-          <a class="back-home" href="/">« EXIT MANUAL</a>
-        </div>
-      </div>
-    </header>
-    <main class="wrap">
-      <div class="wiki-hero">
-        <span class="label">Registry Matrix // Sub-Directory 01</span>
-        <h1>Voxel Blocks Registry</h1>
-        <p class="sub">Comprehensive technical datasheets tracking mining tools, processing recipes, and physical parameters for all materials.</p>
-      </div>
+    <div class="wiki-master-frame">
+      <!-- COLUMN A: THE PERSISTENT SIDEBAR -->
+      <aside class="wiki-sidebar">
+        <a class="sidebar-brand" href="/wiki/">ASTRACUBE // VISOR_OS</a>
+        <nav class="sidebar-menu-group">
+          <label>Core Manual Registries</label>
+          <ul class="sidebar-links">
+            <li>
+              <a id="nav-index" href="/wiki/">
+                <span>Database Index</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="color: var(--lamp); flex-shrink: 0; margin-left: 8px; align-self: center;">
+                  <rect x="7" y="2" width="2" height="2" /><rect x="5" y="4" width="6" height="2" /><rect x="3" y="6" width="10" height="2" /><rect x="2" y="8" width="12" height="2" /><rect x="2" y="10" width="3" height="4" /><rect x="11" y="10" width="3" height="4" /><rect x="5" y="10" width="6" height="1" /><rect x="2" y="12" width="12" height="2" />
+                </svg>
+              </a>
+            </li>
+            <li><a id="nav-blocks" href="/wiki/blocks.html">Voxel Blocks Registry</a></li>
+            <li><a id="nav-blueprints" href="/wiki/blueprints.html">Tools & Assembly</a></li>
+            <li><a id="nav-planets" class="active" href="/wiki/planets.html">Planetary Catalog</a></li>
+          </ul>
+        </nav>
+        <nav class="sidebar-menu-group">
+          <label>External Uplinks</label>
+          <ul class="sidebar-links">
+            <li><a href="/" style="color: var(--lamp);">« Exit To Homepage</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">AstraCube Data Node<br>Version v0.42 // Godot 4.3</div>
+      </aside>
 
-      <!-- ENTRY 01: IRON ORE -->
-      <section class="block-entry-section">
-        <div class="block-profile-grid">
-          <div class="block-visual-box">
-            <div class="block-cube-frame">
-              <div class="voxel-mock-art" style="color: #6e7a8c;"></div>
-              <span class="id-badge">REGISTRY_ID // #0012_FERRUM</span>
-            </div>
-            <h2>Iron Ore Crust</h2>
-            <span class="version-stamp">DEPLOY_TAG // ADDED_V0.12_ALPHA</span>
-            <p>A dense, heavy metallic cluster found inside impact craters. Forms the primary foundation asset for early logistics grids, conveyor channels, and frame plates.</p>
-          </div>
-          <div class="block-specs-ledger">
-            <div class="specs-group-card">
-              <h3>1. Structural Parameters</h3>
-              <table class="spec-data-table">
-                <tr><td class="property-name">Hardness Tier</td><td class="property-value" style="color: var(--aurora);">TIER_02 [REINFORCED]</td></tr>
-                <tr><td class="property-name">Required Tool</td><td class="property-value">Pneumatic Breaker</td></tr>
-                <tr><td class="property-name">Base Mass</td><td class="property-value">7.84 kg / block</td></tr>
-              </table>
-            </div>
-            <div class="recipe-matrix-panel">
-              <div class="recipe-card">
-                <h4>Recipes Used To Build This Item</h4>
-                <div class="recipe-flow-row">
-                  <span class="recipe-ingredients">3x Loose Iron Pebbles</span>
-                  <span class="recipe-result target-highlight">➔ 1x Iron Crust</span>
-                </div>
-              </div>
-              <div class="recipe-card">
-                <h4>Recipes This Item Is Used In</h4>
-                <div class="recipe-flow-row">
-                  <span class="recipe-ingredients">1x Iron Crust (Smelter)</span>
-                  <span class="recipe-result">➔ 3x Refined Iron Plates</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <!-- COLUMN B: CONTENT SEGMENT SPACE -->
+      <main class="wiki-workspace">
+        <nav class="wiki-breadcrumbs">
+          <a href="/">Home</a> ➔ <a href="/wiki/">Wiki Hub</a> ➔ <a href="/wiki/planets.html">Planetary Catalog</a>
+        </nav>
+        
+        <div class="wiki-hero">
+          <span class="label">Visor OS // Astronomical Ledger</span>
+          <h1>Planetary Catalog</h1>
+          <p class="sub">Telemetry reports tracking environmental profiles, localized bio-hazards, and material block compositions for the 4 core celestial planet families.</p>
         </div>
-      </section>
-    </main>
-    <footer>
-      <div class="wrap">AstraCube Public Database Environment · Core Engine Godot 4.3</div>
-    </footer>
+
+        <!-- ENTRY 01: DUST ARCHETYPE -->
+        <section class="planet-entry-section">
+          <div class="planet-profile-grid">
+            <div class="planet-visual-box">
+              <div class="planet-cube-frame">
+                <div class="cube-iso-dec" style="color: var(--lamp);">
+                  <div class="cube-face-top"></div><div class="cube-face-front"></div><div class="cube-face-side"></div>
+                </div>
+              </div>
+              <h2>Desert Barrens</h2>
+              <span class="family-badge dust">Family Track // Dust</span>
+              <p>Arid, dry celestial environments characterized by vast dune systems and shifting wind currents. Foundational structures require careful stabilization against shifting geological layers.</p>
+            </div>
+            
+            <div class="planet-specs-ledger">
+              <div class="specs-group-card">
+                <h3>1. Atmosphere & Hazard Telemetry</h3>
+                <table class="spec-data-table">
+                  <tr><td class="property-name">Atmospheric Shield Presence</td><td class="property-value" style="color: var(--aurora);">ACTIVE // TRUE</td></tr>
+                  <tr><td class="property-name">Atmosphere Tint Core</td><td class="property-value">RGB(0.85, 0.60, 0.40)</td></tr>
+                  <tr><td class="property-name">Localized Bio-Hazard Class</td><td class="property-value" style="color: var(--alarm);">THERMAL_HEAT</td></tr>
+                  <tr><td class="property-name">Hazard Degradation Speed</td><td class="property-value">2.0 DPS // Exposure Rules</td></tr>
+                </table>
+              </div>
+              <div class="composition-panel">
+                <h4>2. Underlying Voxel Composition Structure</h4>
+                <div class="composition-row"><span class="comp-layer">Surface Crust Layer</span><span class="comp-block">Blocks.REGOLITH</span></div>
+                <div class="composition-row"><span class="comp-layer">Sub-Surface Soil Layer</span><span class="comp-block">Blocks.REGOLITH</span></div>
+                <div class="composition-row"><span class="comp-layer">Deep Bedrock Foundation</span><span class="comp-block">Blocks.ROCK</span></div>
+                <div class="composition-row"><span class="comp-layer">Core Matrix Center</span><span class="comp-block">Blocks.CORE</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ENTRY 02: VERDANT ARCHETYPE -->
+        <section class="planet-entry-section">
+          <div class="planet-profile-grid">
+            <div class="planet-visual-box">
+              <div class="planet-cube-frame">
+                <div class="cube-iso-dec" style="color: var(--aurora);">
+                  <div class="cube-face-top"></div><div class="cube-face-front"></div><div class="cube-face-side"></div>
+                </div>
+              </div>
+              <h2>Lush Habitat</h2>
+              <span class="family-badge verdant">Family Track // Verdant</span>
+              <p>Stable, atmospheric sectors with surface-level liquid water basins and thriving automated plant foliage networks. Excellent staging environment for initial supply production.</p>
+            </div>
+            
+            <div class="planet-specs-ledger">
+              <div class="specs-group-card">
+                <h3>1. Atmosphere & Hazard Telemetry</h3>
+                <table class="spec-data-table">
+                  <tr><td class="property-name">Atmospheric Shield Presence</td><td class="property-value" style="color: var(--aurora);">ACTIVE // TRUE</td></tr>
+                  <tr><td class="property-name">Atmosphere Tint Core</td><td class="property-value">RGB(0.45, 0.68, 1.00)</td></tr>
+                  <tr><td class="property-name">Localized Bio-Hazard Class</td><td class="property-value" style="color: var(--aurora);">NONE // SECURE</td></tr>
+                  <tr><td class="property-name">Hazard Degradation Speed</td><td class="property-value">0.0 DPS // Safe Environment</td></tr>
+                </table>
+              </div>
+              <div class="composition-panel">
+                <h4>2. Underlying Voxel Composition Structure</h4>
+                <div class="composition-row"><span class="comp-layer">Surface Crust Layer</span><span class="comp-block">Blocks.GRASS</span></div>
+                <div class="composition-row"><span class="comp-layer">Sub-Surface Soil Layer</span><span class="comp-block">Blocks.DIRT</span></div>
+                <div class="composition-row"><span class="comp-layer">Deep Bedrock Foundation</span><span class="comp-block">Blocks.ROCK</span></div>
+                <div class="composition-row"><span class="comp-layer">Core Matrix Center</span><span class="comp-block">Blocks.CORE</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ENTRY 03: FROZEN ARCHETYPE -->
+        <section class="planet-entry-section">
+          <div class="planet-profile-grid">
+            <div class="planet-visual-box">
+              <div class="planet-cube-frame">
+                <div class="cube-iso-dec" style="color: #a8d6f2;">
+                  <div class="cube-face-top"></div><div class="cube-face-front"></div><div class="cube-face-side"></div>
+                </div>
+              </div>
+              <h2>Glacial Void</h2>
+              <span class="family-badge frozen">Family Track // Frozen</span>
+              <p>Ice-locked zones where open water surfaces have completely solidified. Extreme sub-zero temperatures force critical energy management systems to work under heavy load rules.</p>
+            </div>
+            
+            <div class="planet-specs-ledger">
+              <div class="specs-group-card">
+                <h3>1. Atmosphere & Hazard Telemetry</h3>
+                <table class="spec-data-table">
+                  <tr><td class="property-name">Atmospheric Shield Presence</td><td class="property-value" style="color: var(--aurora);">ACTIVE // TRUE</td></tr>
+                  <tr><td class="property-name">Atmosphere Tint Core</td><td class="property-value">RGB(0.70, 0.85, 1.00)</td></tr>
+                  <tr><td class="property-name">Localized Bio-Hazard Class</td><td class="property-value" style="color: var(--alarm);">CRYOGENIC_COLD</td></tr>
+                  <tr><td class="property-name">Hazard Degradation Speed</td><td class="property-value">4.5 DPS // Heavy Suit Load</td></tr>
+                </table>
+              </div>
+              <div class="composition-panel">
+                <h4>2. Underlying Voxel Composition Structure</h4>
+                <div class="composition-row"><span class="comp-layer">Surface Crust Layer</span><span class="comp-block">Blocks.SNOW</span></div>
+                <div class="composition-row"><span class="comp-layer">Sub-Surface Soil Layer</span><span class="comp-block">Blocks.ICE</span></div>
+                <div class="composition-row"><span class="comp-layer">Deep Bedrock Foundation</span><span class="comp-block">Blocks.ROCK</span></div>
+                <div class="composition-row"><span class="comp-layer">Core Matrix Center</span><span class="comp-block">Blocks.CORE</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ENTRY 04: SCORCHED ARCHETYPE -->
+        <section class="planet-entry-section">
+          <div class="planet-profile-grid">
+            <div class="planet-visual-box">
+              <div class="planet-cube-frame">
+                <div class="cube-iso-dec" style="color: var(--alarm);">
+                  <div class="cube-face-top"></div><div class="cube-face-front"></div><div class="cube-face-side"></div>
+                </div>
+              </div>
+              <h2>Volcanic Spire</h2>
+              <span class="family-badge scorched">Family Track // Scorched</span>
+              <p>High-hazard geological anomalies defined by craggy basalt stone ridges, thick ash clouds, and open magma oceans. Requires heavily insulated environmental armor configurations.</p>
+            </div>
+            
+            <div class="planet-specs-ledger">
+              <div class="specs-group-card">
+                <h3>1. Atmosphere & Hazard Telemetry</h3>
+                <table class="spec-data-table">
+                  <tr><td class="property-name">Atmospheric Shield Presence</td><td class="property-value" style="color: var(--aurora);">ACTIVE // TRUE</td></tr>
+                  <tr><td class="property-name">Atmosphere Tint Core</td><td class="property-value">RGB(0.24, 0.08, 0.10)</td></tr>
+                  <tr><td class="property-name">Localized Bio-Hazard Class</td><td class="property-value" style="color: var(--alarm);">MAGMA_OVERHEATING</td></tr>
+                  <tr><td class="property-name">Hazard Degradation Speed</td><td class="property-value">8.0 DPS // Critical Clearance</td></tr>
+                </table>
+              </div>
+              <div class="composition-panel">
+                <h4>2. Underlying Voxel Composition Structure</h4>
+                <div class="composition-row"><span class="comp-layer">Surface Crust Layer</span><span class="comp-block">Blocks.ASH_SAND</span></div>
+                <div class="composition-row"><span class="comp-layer">Sub-Surface Soil Layer</span><span class="comp-block">Blocks.ROCK</span></div>
+                <div class="composition-row"><span class="comp-layer">Deep Bedrock Foundation</span><span class="comp-block">Blocks.ROCK</span></div>
+                <div class="composition-row"><span class="comp-layer">Core Matrix Center</span><span class="comp-block">Blocks.CORE</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
   </body>
 </html>
