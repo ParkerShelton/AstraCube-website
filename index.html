@@ -509,7 +509,7 @@
           <!-- Left side copyright info and wiki subpage link -->
           <div class="footer-links-group">
             <span>AstraCube · © 2026 All Rights Reserved</span>
-            <a href="/wiki" target="_blank" rel="noopener" title="Browse the public gameplay manual database">System Wiki</a>
+            <a href="/wiki/" target="_blank" rel="noopener" title="Browse the public gameplay manual database">System Wiki</a>
             <a href="/privacy" target="_blank" rel="noopener" title="View our data handling rules sheet">Privacy Policy</a>
           </div>
 
@@ -536,7 +536,19 @@
     </aside>
 
     <!-- PERSISTENT SUB-VIEW FEEDBACK BUG SHORTCUT BUTTON -->
-    <button class="floating-bug-panel-btn" id="hud-bug-shortcut" title="Transmit feedback" aria-label="Open feedback modal">
+    <!-- WIKI SHORTCUT: same look as the bug button, stacked just above it -->
+    <a class="floating-bug-panel-btn hud-fab wiki-fab" href="/wiki/" data-label="Wiki" aria-label="Open the AstraCube wiki">
+      <svg viewBox="0 0 24 20" aria-hidden="true">
+        <!-- Open book: two pages either side of the spine -->
+        <path d="M 12,5 L 5,3.5 L 5,15 L 12,16.5 Z" />
+        <path d="M 12,5 L 19,3.5 L 19,15 L 12,16.5 Z" />
+        <!-- Lines of text -->
+        <path d="M 7,7 L 10,7.6 M 7,10 L 10,10.6 M 7,13 L 9,13.4" stroke-width="1" />
+        <path d="M 14,7.6 L 17,7 M 14,10.6 L 17,10 M 15,13.4 L 17,13" stroke-width="1" />
+      </svg>
+    </a>
+
+    <button class="floating-bug-panel-btn hud-fab" id="hud-bug-shortcut" data-label="Report a bug" aria-label="Open feedback modal">
       <svg viewBox="0 0 24 20" aria-hidden="true">
         <!-- Core Shell Carapace Hull -->
         <rect x="9" y="6" width="6" height="10" stroke-width="1.5" />

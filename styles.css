@@ -663,6 +663,41 @@
   .floating-bug-panel-btn { transition: border-color 0.15s ease, box-shadow 0.15s ease, bottom 0.3s ease; }
   .alpha-banner-visible .floating-bug-panel-btn { bottom: 68px; }
 
+  /* Wiki shortcut: the bug button's twin, one button-height (plus a gap) above it */
+  .wiki-fab { bottom: 76px; text-decoration: none; }
+  .alpha-banner-visible .wiki-fab { bottom: 120px; }
+
+  /* Hover labels for the floating buttons: a tag that slides out to the left.
+     Only on devices that can hover; a touch screen just gets the icon. */
+  @media (hover: hover) {
+    .hud-fab::after {
+      content: attr(data-label);
+      position: absolute;
+      right: calc(100% + 10px);
+      top: 50%;
+      transform: translate(6px, -50%);
+      padding: 6px 10px;
+      background: rgba(18, 24, 41, 0.95);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--text);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .hud-fab:hover::after,
+    .hud-fab:focus-visible::after {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+  }
+
   /* Alpha sign-up banner: slim bar pinned to the bottom, hidden below the screen until shown.
      Mobile shows just the button; the "Closed Alpha" tag joins it at 480px+. */
   .alpha-banner {
