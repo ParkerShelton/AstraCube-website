@@ -57,7 +57,7 @@
   h2 { font-size: var(--step-3); letter-spacing: 0.01em; }
   h3 { font-size: var(--step-1); }
   p { margin: 0; }
-  .lede { max-width: 62ch; color: var(--steel); font-size: var(--step-1); line-height: 1.5; }
+  .lede { max-width: 62ch; color: var(--steel); font-size: var(--step-1); line-height: 1.5; align-content: start;}
   
   .label {
     font-family: var(--mono);
@@ -264,6 +264,7 @@
     font-size: 0.8rem;
     color: var(--lamp);
   }
+
   .story li::after {
     content: "";
     position: absolute;
@@ -272,8 +273,20 @@
     background: var(--ink);
     border: 2px solid var(--lamp);
     transform: rotate(45deg);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  .story li:first-child::after { background: var(--alarm); border-color: var(--alarm); }
+  .story li.active::after {
+    background: var(--aurora) !important;
+    border-color: var(--aurora) !important;
+    box-shadow: 0 0 12px var(--aurora); /* Adds a high-tech radar glow */
+  }
+  .story li.active::before {
+    color: var(--aurora) !important;
+    text-shadow: 0 0 10px rgba(95, 211, 181, 0.4); /* Gives the numbers a matching clean sci-fi glow */
+    transition: color 0.3s ease, text-shadow 0.3s ease; /* Keeps the step transition perfectly fluid */
+  }
+
+  /* .story li:first-child::after { background: var(--aurora); border-color: var(--aurora); } */
   .story h3 { font-size: 1.15rem; }
   .story p { color: var(--steel); font-size: 0.97rem; }
   
@@ -773,9 +786,72 @@
   
   @media (max-width: 900px) {
     .nav a:not(.navcta) { display: none; }
-    .story { grid-template-columns: 1fr; }
-    .story li { border-top: 0; border-left: 2px solid var(--line); padding: 0 0 26px 22px; }
-    .story li::after { top: 4px; left: -7px; }
+
+    /* 1. Turn the parent container into a clean vertical list stack */
+    .story { 
+      grid-template-columns: 1fr !important; 
+      display: flex !important;
+      flex-direction: column !important;
+      background: none !important;
+    }
+    .story::before { display: none !important; }
+
+    /* 2. Clear out desktop borders and lock the padding track */
+    .story li { 
+      display: block !important; 
+      border-top: 0 !important; 
+      border-left: none !important; 
+      padding: 0 0 26px 22px !important; 
+      background: none !important;
+      position: relative !important;
+    }
+
+    /* 3. KEEP THE NUMBERS CLEAN: Standard text block placement right above your titles */
+    .story li::before {
+      content: counter(step, decimal-leading-zero) !important;
+      display: block !important;
+      margin-bottom: 4px !important;
+      font-family: var(--mono) !important;
+      font-size: 0.8rem !important;
+      color: var(--lamp) !important;
+      background: none !important; /* Wipes out that broken inner background line block */
+    }
+
+    /* 4. 🛠️ LEAK-PROOF LAYOUT LINE: Draws the line segments bound tightly to the text elements */
+    .story li:not(:last-child) h3::before {
+      content: "" !important;
+      position: absolute !important;
+      
+      /* Horizontal alignment: Matches your bullet center axis perfectly */
+      left: 2px !important; 
+      width: 2px !important;
+      
+      /* Vertical alignment: Starts at the current diamond center (9px down) */
+      top: 9px !important;
+      
+      /* 🌟 THE RECOIL TETHER: Spans 100% of the current card's height, but stops exactly 
+        where the next card's text starts. This strips out all arbitrary pixel guesswork. */
+      height: 100% !important;
+      margin-bottom: -10px !important; 
+      
+      background-color: var(--line) !important;
+      display: block !important;
+      z-index: 1 !important;
+    }
+
+    /* 🔴 HARD CAP: Clears out any remnant graphic assets from generating inside card 5 */
+    .story li:last-child h3::before {
+      display: none !important;
+    }
+
+    /* 5. Keeps your custom diamond bullet coordinate paths completely untouched */
+    .story li::after { 
+      position: absolute !important;
+      top: 4px !important; 
+      left: -4px !important; 
+      z-index: 2 !important; 
+    }
+
     .families { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     #visor-night-shroud { display: none !important; }
   }
@@ -797,10 +873,62 @@
   }
   
   /* Mobile & Structural Flow Optimizations (820px down to 420px) */
-  @media (max-width: 820px) {
-    .systems-grid-panel { grid-template-columns: 1fr; }
-    .console-card { padding: 28px 24px; }
+@media (max-width: 820px) {
+  /* Targeted selector with !important to force a clean vertical stack */
+  .systems-grid-panel.expanded-layout,
+  .systems-grid-panel { 
+    grid-template-columns: 1fr !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    background: transparent !important; 
+    border: none !important;
+    box-shadow: none !important;
+    padding-top: 60px !important; /* Creates a dedicated, safe airspace for the crawler */
   }
+
+  /* Keep individual cards looking like standalone panels */
+  .console-card { 
+    padding: 28px 24px !important; 
+    border: 1px solid var(--line) !important;
+    background: var(--ink-2) !important;
+  }
+
+  /* STILL HIDES THE REST: Cooking pot, animal backdrop, and floating spaceship */
+  .pot-backdrop-shield,
+  .bg-vector-pot,
+  .bg-vector-fauna,
+  .console-card svg {
+    display: none !important;
+  }
+
+  /* RESTORES THE MOVING CRAWLER TO THE TOP OF THE CONTAINER */
+  .bg-vector-rover {
+    display: block !important;
+    position: absolute !important; /* Pulls it out of card flow so it can drift freely */
+    top: 0px !important; /* Forces it to sit strictly above your first text block */
+    bottom: unset !important;
+    right: unset !important;
+    
+    /* Responsive sizing rules for smaller screens */
+    width: 76px !important;
+    height: 52px !important;
+    z-index: 25 !important;
+    
+    /* Re-ignites your native 22-second looping patrol script across mobile widths */
+    animation: mobileCrawlerPatrol 16s linear infinite !important; 
+    pointer-events: none !important;
+  }
+
+  /* Tailored animation pathing optimized to fit tighter mobile bounds without clipping */
+  @keyframes mobileCrawlerPatrol {
+    0% { left: 16px; transform: translateY(0) scaleX(-1); }
+    45% { left: calc(100% - 92px); transform: translateY(0) scaleX(-1); }
+    48% { left: calc(100% - 92px); transform: translateY(0) scaleX(1); }
+    95% { left: 16px; transform: translateY(0) scaleX(1); }
+    100% { left: 16px; transform: translateY(0) scaleX(-1); }
+  }
+}
   
   @media (max-width: 768px) {
     .hud-terminal-display { grid-template-columns: 1fr !important; gap: 16px !important; padding: 42px 24px 30px !important; }

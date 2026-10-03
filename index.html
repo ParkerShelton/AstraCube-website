@@ -1600,6 +1600,58 @@
       })();
 
 
+      /// =========================================================================
+      // 📡 DYNAMIC SANDBOX TIMELINE RADAR (MAXIMUM VISIBILITY ENGINE)
+      // =========================================================================
+      (function() {
+        const storyItems = document.querySelectorAll(".story li");
+        if (!storyItems.length) return;
+
+        // Track the raw visibility ratios for every single timeline element card
+        const itemVisibilityMap = new Map();
+
+        const radarOptions = {
+          root: null,
+          rootMargin: "-35% 0px -15% 0px",
+          threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+        };
+
+
+        const timelineRadar = new IntersectionObserver((entries) => {
+          // 1. Update the visibility log spreadsheet map with fresh scroll math data
+          entries.forEach(entry => {
+            itemVisibilityMap.set(entry.target, entry.intersectionRatio);
+          });
+
+          // 2. Scan through all items to calculate which card holds the largest screen share
+          let highestVisibleCard = null;
+          let maximumScreenRatio = -1;
+
+          itemVisibilityMap.forEach((ratio, cardNode) => {
+            if (ratio > maximumScreenRatio) {
+              maximumScreenRatio = ratio;
+              highestVisibleCard = cardNode;
+            }
+          });
+
+          // 3. Apply the glowing active state to the absolute winner
+          if (highestVisibleCard) {
+            storyItems.forEach(item => {
+              if (item === highestVisibleCard) {
+                item.classList.add("active");
+              } else {
+                item.classList.remove("active");
+              }
+            });
+          }
+        }, radarOptions);
+
+        // Arm the radar scanner matrix to actively track elements
+        storyItems.forEach(item => {
+          itemVisibilityMap.set(item, 0); // Initialize spreadsheet
+          timelineRadar.observe(item);
+        });
+      })();
 
 
 
