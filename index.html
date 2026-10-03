@@ -23,12 +23,16 @@
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 28 10v12L16 29 4 22V10z" fill="#f2a641"/><path d="M16 16 28 10v12L16 29z" fill="#b8742a"/><path d="M16 16 4 10v12l12 7z" fill="#d68c35"/></svg>
           ASTRACUBE
         </a>
-        <nav class="nav" aria-label="Sections">
-          <a href="#opening">The Opening</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="site-nav" aria-label="Sections">
           <a href="#worlds">Worlds</a>
+          <a href="#terminal-station">Terminal</a>
           <a href="#systems">Systems</a>
+          <a href="#opening">The Opening</a>
           <a href="#after-dark">After Dark</a>
-          <a class="navcta" href="#alpha">Join the Alpha</a>
+          <!-- <a class="navcta" href="#alpha">Join the Alpha</a> -->
         </nav>
       </div>
     </header>
@@ -90,23 +94,26 @@
         </div>
         
         <!-- VISOR TELEMETRY -->
+          <!-- SENSOR OVERLAY / VISOR TELEMETRY: COMMENTED OUT
+               To restore: delete these three note lines and the closing "END SENSOR OVERLAY" line,
+               then remove the space in every "- ->" inside (inner comments can't nest).
           <div class="classes" id="visor-telemetry-section" style="margin-top: 80px; padding-top: 58px; border-top: 1px solid var(--line);">
-            <!-- Left Column: Title and Concept -->
-            <div>
+            <!-- Left Column: Title and Concept - ->
+            <div class="visor-intro">
               <span class="label" style="color: var(--aurora);">Sensor Overlay</span>
               <h3 style="margin-top: 12px; font-size: var(--step-2);">Visor Telemetry</h3>
-              <p style="color: var(--steel); font-size: 0.95rem; line-height: 1.6; margin-top: 16px; border-left: 2px solid var(--aurora); padding-left: 16px;">
+              <p class="visor-callout" style="color: var(--steel); font-size: 0.95rem; line-height: 1.6;">
                 Monitor localized air presence, map unexpected cavern changes while dug deep underground, and chart real-time environmental hazards directly on your suit display.
               </p>
             </div>
             
-            <!-- Right Column: Description + Suit Terminal Readout Window -->
-            <div style="display: grid; gap: 24px; align-content: start;">
-              <p style="color: var(--text); font-size: var(--step-0); line-height: 1.6; margin: 0;">
-                Planets do not carry preset difficulty meters or arcade names. You must evaluate a world by constructing hand-held sensors and tools to actively scan your surroundings.
+            <!-- Right Column: Description + Suit Terminal Readout Window - ->
+            <div class="visor-readout">
+              <p style="color: var(--text); font-size: var(--step-0); line-height: 1.6;">
+                Planets don't come with difficulty ratings or warning labels. You must evaluate a world by constructing hand-held sensors and tools to actively scan your surroundings.
               </p>
               
-              <!-- The Tactical Suit Terminal Interface -->
+              <!-- The Tactical Suit Terminal Interface - ->
               <div class="hud-terminal-display">
                 <div class="hud-node">
                   <span class="hud-label">OXYGEN CAPACITY</span>
@@ -127,6 +134,7 @@
               </div>
             </div>
           </div>
+          END SENSOR OVERLAY -->
 
 
 
@@ -134,11 +142,11 @@
       </section>
   
       <!-- MONITOR SWIVEL CONSOLE -->
-      <section id="terminal-station" style="position: relative; overflow: hidden; padding-block: 100px; background: var(--ink); border-top: 1px solid var(--line);">
+      <section id="terminal-station" style="position: relative; overflow: hidden; background: var(--ink); border-top: 1px solid var(--line);">
         <div class="wrap" style="position: relative; z-index: 5;">
           
           <!-- Split Console Layout Matrix Container -->
-          <div class="terminal-layout-wrapper" style="display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: center;">
+          <div class="terminal-layout-wrapper">
             
             <!-- Left Column: Instructional Data -->
             <div class="terminal-text-block" style="display: grid; gap: 14px;">
@@ -244,17 +252,34 @@
           </div>
 
 
-          <!-- Quadruped Wildlife Backdrop Anchor -->
-          <svg class="bg-vector-fauna" viewBox="0 0 100 100" xmlns="http://w3.org" aria-hidden="true">
-            <polygon points="25,45 50,55 50,75 25,62" fill="#57944d" />
-            <polygon points="50,55 75,45 75,62 50,75" fill="#66aa58" />
-            <polygon points="35,35 50,41 65,35 50,30" fill="#388c38" />
-            <polygon points="32,26 50,33 50,21 32,16" fill="#e8ecf3" />
-            <polygon points="50,33 68,26 68,16 50,21" fill="#ffffff" />
-            <polygon points="42,27 50,30 50,26 42,23" fill="#ef5a5f" />
-            <polygon points="50,30 58,27 58,23 50,26" fill="#ef5a5f" />
-            <polygon points="30,60 38,62 38,84 30,80" fill="#57944d" />
-            <polygon points="62,62 70,60 70,80 62,84" fill="#388c38" />
+          <!-- Alien plant: a random one of the game's POD / FROND flora is drawn in here on page load
+               (see "Alien plant backdrop" script). The Lantern Pod below is the no-script fallback. -->
+          <svg class="bg-vector-fauna" id="alien-plant" viewBox="0 0 100 100" xmlns="http://w3.org" aria-hidden="true">
+            <defs>
+              <radialGradient id="lanternPodGlow">
+                <stop offset="0" stop-color="#f5cc6b" stop-opacity="0.35" />
+                <stop offset="1" stop-color="#f5cc6b" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <polygon points="24,92 50,86 76,92 50,98" fill="#28314a" />
+            <circle cx="33" cy="50" r="15.6" fill="url(#lanternPodGlow)" />
+            <circle cx="66" cy="65" r="13" fill="url(#lanternPodGlow)" />
+            <circle cx="50" cy="32" r="20.8" fill="url(#lanternPodGlow)" />
+            <rect x="31" y="56" width="2" height="36" fill="#758f94" />
+            <rect x="33" y="56" width="2" height="36" fill="#5c7378" />
+            <polygon points="33,44 39,47 33,50 27,47" fill="#ffe29a" />
+            <polygon points="27,47 33,50 33,56 27,53" fill="#f5cc6b" />
+            <polygon points="33,50 39,47 39,53 33,56" fill="#d9a94a" />
+            <rect x="64" y="70" width="2" height="22" fill="#758f94" />
+            <rect x="66" y="70" width="2" height="22" fill="#5c7378" />
+            <polygon points="66,60 71,62.5 66,65 61,62.5" fill="#ffe29a" />
+            <polygon points="61,62.5 66,65 66,70 61,67.5" fill="#f5cc6b" />
+            <polygon points="66,65 71,62.5 71,67.5 66,70" fill="#d9a94a" />
+            <rect x="48" y="40" width="2" height="52" fill="#758f94" />
+            <rect x="50" y="40" width="2" height="52" fill="#5c7378" />
+            <polygon points="50,24 58,28 50,32 42,28" fill="#ffe29a" />
+            <polygon points="42,28 50,32 50,40 42,36" fill="#f5cc6b" />
+            <polygon points="50,32 58,28 58,36 50,40" fill="#d9a94a" />
           </svg>
 
 
@@ -280,15 +305,21 @@
               <rect x="48" y="28" width="44" height="6" fill="#9aa6b8" />
               <rect x="68" y="16" width="2" height="12" fill="#e8ecf3" />
               <rect x="84" y="10" width="1" height="18" fill="#9aa6b8" />
-              <rect x="30" y="74" width="24" height="24" fill="#070a12" />
-              <rect x="34" y="78" width="16" height="16" fill="#28314a" />
-              <rect x="40" y="84" width="4" height="4" fill="#9aa6b8" />
-              <rect x="68" y="74" width="24" height="24" fill="#070a12" />
-              <rect x="72" y="78" width="16" height="16" fill="#28314a" />
-              <rect x="78" y="84" width="4" height="4" fill="#9aa6b8" />
-              <rect x="106" y="74" width="24" height="24" fill="#070a12" />
-              <rect x="110" y="78" width="16" height="16" fill="#28314a" />
-              <rect x="116" y="84" width="4" height="4" fill="#9aa6b8" />
+              <g class="rover-wheel">
+                <rect x="30" y="74" width="24" height="24" fill="#070a12" />
+                <rect x="34" y="78" width="16" height="16" fill="#28314a" />
+                <rect x="40" y="84" width="4" height="4" fill="#9aa6b8" />
+              </g>
+              <g class="rover-wheel">
+                <rect x="68" y="74" width="24" height="24" fill="#070a12" />
+                <rect x="72" y="78" width="16" height="16" fill="#28314a" />
+                <rect x="78" y="84" width="4" height="4" fill="#9aa6b8" />
+              </g>
+              <g class="rover-wheel">
+                <rect x="106" y="74" width="24" height="24" fill="#070a12" />
+                <rect x="110" y="78" width="16" height="16" fill="#28314a" />
+                <rect x="116" y="84" width="4" height="4" fill="#9aa6b8" />
+              </g>
             </svg>
 
             <!-- CARD 01: INDUSTRY -->
@@ -498,6 +529,12 @@
     </footer>
 
 
+    <!-- ALPHA SIGN-UP BANNER: slides up once the hero is off screen, hides again over the footer -->
+    <aside class="alpha-banner" aria-label="Closed alpha sign-up">
+      <span class="eyebrow alpha-banner-text"><i></i>Closed Alpha · Windows & Linux</span>
+      <button class="btn primary invite-trigger-btn alpha-banner-btn" type="button">Request Invite</button>
+    </aside>
+
     <!-- PERSISTENT SUB-VIEW FEEDBACK BUG SHORTCUT BUTTON -->
     <button class="floating-bug-panel-btn" id="hud-bug-shortcut" title="Transmit feedback" aria-label="Open feedback modal">
       <svg viewBox="0 0 24 20" aria-hidden="true">
@@ -603,6 +640,178 @@
     </div>
 
     <script>
+      // ---- Alien plant backdrop ------------------------------------------------------
+      // Each load draws a different plant from the game, one of each kind it grows, in the
+      // same block style. Names and colours (col / col2 / berry) come from FOLIAGE and
+      // AURORA_BLOOM in the game's blocks.gd; the shapes follow its meshes in chunk.gd.
+      (function () {
+        const svg = document.getElementById("alien-plant");
+        if (!svg) return;
+
+        const PLANTS = [
+          { name: "Lantern Pod",  form: "pod",    col: "#758f94", col2: "#f5cc6b" },  // frozen worlds
+          { name: "Glass Frond",  form: "frond",  col: "#428a80", col2: "#85ccc2" },  // ocean worlds
+          { name: "Cinder Cup",   form: "flower", col: "#573830", col2: "#f06b1f" },  // scorched worlds
+          { name: "Sea Berry",    form: "bush",   col: "#38705c", col2: "#57946f", berry: "#f5a329" },
+          { name: "Ember Lash",   form: "grass",  col: "#6b3d2e", col2: "#cc5729" },  // scorched worlds
+          { name: "Aurora Bloom", form: "bloom",  col: "#8cf2e6" },                   // grows only under an aurora
+        ];
+        const plant = PLANTS[Math.floor(Math.random() * PLANTS.length)];
+        const GROUND = 92;   // y of the soil line in the 100x100 viewBox
+        // A fixed scatter, like the game's per-cell hash, so a plant looks the same every time it is drawn
+        const f01 = (i) => ((0.37 * 97.13 + i * 31.7) % 1 + 1) % 1;
+
+        // Lighten (amt > 0) or darken (amt < 0) a hex colour
+        function shade(hex, amt) {
+          const n = parseInt(hex.slice(1), 16);
+          const ch = (v) => Math.round(amt > 0 ? v + (255 - v) * amt : v * (1 + amt));
+          return "#" + ((1 << 24) | (ch(n >> 16) << 16) | (ch((n >> 8) & 255) << 8) | ch(n & 255)).toString(16).slice(1);
+        }
+        function mix(a, b, t) {
+          const x = parseInt(a.slice(1), 16), y = parseInt(b.slice(1), 16);
+          const ch = (s) => Math.round(((x >> s) & 255) + (((y >> s) & 255) - ((x >> s) & 255)) * t);
+          return "#" + ((1 << 24) | (ch(16) << 16) | (ch(8) << 8) | ch(0)).toString(16).slice(1);
+        }
+        const pts = (list) => list.map(([x, y]) => `${+x.toFixed(2)},${+y.toFixed(2)}`).join(" ");
+        const poly = (list, fill) => `<polygon points="${pts(list)}" fill="${fill}" />`;
+        // An isometric block: half-width a, side faces v tall, top face starting at yt
+        function block(cx, yt, a, v, color) {
+          return poly([[cx - a, yt], [cx, yt - a / 2], [cx + a, yt], [cx, yt + a / 2]], shade(color, 0.35)) +
+                 poly([[cx - a, yt], [cx, yt + a / 2], [cx, yt + a / 2 + v], [cx - a, yt + v]], color) +
+                 poly([[cx, yt + a / 2], [cx + a, yt], [cx + a, yt + v], [cx, yt + a / 2 + v]], shade(color, -0.2));
+        }
+        function stalk(cx, top, w, color, bottom = GROUND) {
+          return `<rect x="${cx - w / 2}" y="${top}" width="${w / 2}" height="${bottom - top}" fill="${color}" />` +
+                 `<rect x="${cx}" y="${top}" width="${w / 2}" height="${bottom - top}" fill="${shade(color, -0.2)}" />`;
+        }
+        const glow = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#alienPlantGlow)" />`;
+
+        const glowColor = plant.col2 || plant.col;
+        let art = `<defs><radialGradient id="alienPlantGlow"><stop offset="0" stop-color="${glowColor}" stop-opacity="0.35" />` +
+                  `<stop offset="1" stop-color="${glowColor}" stop-opacity="0" /></radialGradient></defs>` +
+                  poly([[24, 92], [50, 86], [76, 92], [50, 98]], "#28314a");
+
+        if (plant.form === "pod") {
+          // A stem with a bulb on it, and smaller ones beside -- each shorter than the last
+          const pods = [{ x: 33, stem: 37, size: 12.6 }, { x: 66, stem: 23, size: 9.2 }, { x: 50, stem: 52, size: 16 }]
+            .map((p) => ({ ...p, cy: GROUND - p.stem - p.size / 2 }));
+          for (const p of pods) art += glow(p.x, p.cy, p.size * 1.3);
+          for (const p of pods) art += stalk(p.x, p.cy + p.size / 2, 4, plant.col) + block(p.x, p.cy - p.size / 4, p.size / 2, p.size / 2, plant.col2);
+
+        } else if (plant.form === "frond") {
+          // A bare stalk with a fan off the top of it, all to one side -- what makes it read as not-from-here.
+          // It leans in toward the cards so the fan is never the part cut off at the screen edge.
+          const baseX = 58, top = 48, n = 6;
+          art += stalk(baseX, top, 4, plant.col);
+          for (let i = 0; i < n; i++) {
+            const t = i / (n - 1);
+            const a = 3 + 7 * t;
+            art += block(baseX - 24 * t, top - 30 * t - a / 2, a, 5, mix(plant.col, plant.col2, t));
+          }
+
+        } else if (plant.form === "flower") {
+          // A stem with a head of a few petals, and a brighter middle
+          const cx = 50, headY = 34;
+          art += glow(cx, headY, 24) + stalk(cx, headY + 2, 4, plant.col);
+          const petals = [0, 1, 2, 3].map((i) => {
+            const ang = (Math.PI / 2) * i + 0.4;
+            return { x: cx + Math.cos(ang) * 10, y: headY + Math.sin(ang) * 5 };
+          }).sort((p, q) => p.y - q.y);
+          for (const p of petals) art += block(p.x, p.y - 4, 8, 5, plant.col2);
+          art += block(cx, headY - 9, 5, 5, shade(plant.col2, 0.3));
+
+        } else if (plant.form === "bush") {
+          // A stub of trunk, then a mass of leaf, with berries out on the outside where they can be seen
+          art += stalk(50, 74, 8, shade(plant.col, -0.42));
+          const leaves = [];
+          for (let i = 0; i < 11; i++) {
+            const ang = Math.PI * 2 * (i / 11 + 0.06);
+            const rad = 6 + 14 * f01(i + 13);
+            const lift = 24 + 30 * f01(i + 6);
+            leaves.push({ x: 50 + Math.cos(ang) * rad * 1.3, y: GROUND - lift + Math.sin(ang) * rad * 0.5,
+                          a: 8 + 5 * f01(i + 4), ang, i, color: mix(plant.col, plant.col2, f01(i + 1) * 0.8) });
+          }
+          leaves.sort((p, q) => p.y - q.y);
+          for (const l of leaves) {
+            art += block(l.x, l.y - l.a / 2, l.a, l.a * 0.8, l.color);
+            if (f01(l.i + 21) < 0.5) art += block(l.x + Math.cos(l.ang) * l.a * 0.8, l.y + l.a * 0.3, 2.6, 2.6, plant.berry);
+          }
+
+        } else if (plant.form === "grass") {
+          // A handful of blades of different heights, with the hot tips glowing
+          const blades = [];
+          for (let i = 0; i < 9; i++) {
+            blades.push({ x: 30 + i * 5 + (f01(i) - 0.5) * 3, h: 18 + 34 * f01(i + 7), t: f01(i + 3) });
+          }
+          for (const b of blades) art += glow(b.x, GROUND - b.h, 5);
+          for (const b of blades) {
+            art += stalk(b.x, GROUND - b.h, 3.2, mix(plant.col, plant.col2, 0.25 + b.t * 0.6));
+            art += `<rect x="${b.x - 1.6}" y="${GROUND - b.h}" width="3.2" height="4" fill="${shade(plant.col2, 0.25)}" />`;
+          }
+
+        } else if (plant.form === "bloom") {
+          // A cluster of glowing crystal spires, the colour of the sky that grew it
+          const spire = (cx, base, a, h) => {
+            const top = base - a / 2 - h, apex = top - a * 1.6;
+            return poly([[cx - a, top], [cx, base - h], [cx, base], [cx - a, base - a / 2]], plant.col) +
+                   poly([[cx, base - h], [cx + a, top], [cx + a, base - a / 2], [cx, base]], shade(plant.col, -0.25)) +
+                   poly([[cx - a, top], [cx, base - h], [cx, apex]], shade(plant.col, 0.45)) +
+                   poly([[cx, base - h], [cx + a, top], [cx, apex]], shade(plant.col, 0.15));
+          };
+          art += glow(50, 58, 34);
+          art += spire(37, 92, 5.5, 20) + spire(62, 91, 6, 26) + spire(50, 94, 8, 40) + spire(43, 96, 4, 9) + spire(57, 97, 3.5, 6);
+        }
+
+        svg.innerHTML = art;
+        svg.dataset.plant = plant.name;
+      })();
+
+      // ---- Alpha sign-up banner ------------------------------------------------------
+      (function () {
+        const banner = document.querySelector(".alpha-banner");
+        const hero = document.querySelector(".hero");
+        const footer = document.querySelector("footer");
+        if (!banner || !hero || !("IntersectionObserver" in window)) return;
+
+        // Show only while neither the hero nor the footer (which both have the same button) is on screen
+        const onScreen = new Set();
+        const observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) onScreen.add(entry.target);
+            else onScreen.delete(entry.target);
+          }
+          const show = onScreen.size === 0;
+          banner.classList.toggle("is-visible", show);
+          document.body.classList.toggle("alpha-banner-visible", show);
+        });
+        observer.observe(hero);
+        if (footer) observer.observe(footer);
+      })();
+
+      // ---- Mobile nav menu --------------------------------------------------------
+      (function () {
+        const toggle = document.querySelector(".nav-toggle");
+        const nav = document.getElementById("site-nav");
+        if (!toggle || !nav) return;
+
+        function setOpen(open) {
+          nav.classList.toggle("open", open);
+          toggle.setAttribute("aria-expanded", String(open));
+          toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        }
+
+        toggle.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
+        // Close after picking a section, tapping outside, pressing Escape, or widening past the breakpoint
+        nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
+        document.addEventListener("click", (e) => {
+          if (nav.classList.contains("open") && !e.target.closest(".top")) setOpen(false);
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && nav.classList.contains("open")) { setOpen(false); toggle.focus(); }
+        });
+        window.matchMedia("(min-width: 1024px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
+      })();
+
       // ---- Web Overlay Form Controller ------------------------------------------
       (function() {
         const hwToggle = document.getElementById("hardware-not-sure-toggle");
@@ -856,7 +1065,7 @@
         });
 
         function handleMobileInitialization() {
-          if (window.innerWidth <= 960) {
+          if (window.innerWidth < 1024) {
             isMonitorDeployed = true;
             // Directly boot the CRT terminal systems instantly
             bootScreenMatrix();
@@ -870,7 +1079,7 @@
         
         // Safety check if someone resizes a window or flips tablet orientation
         window.addEventListener("resize", () => {
-          if (window.innerWidth <= 960 && !isMonitorDeployed) {
+          if (window.innerWidth < 1024 && !isMonitorDeployed) {
             handleMobileInitialization();
           }
         });        
@@ -1374,18 +1583,32 @@
 
         if (!svg || !dist || !hint || !face) return;
 
-        const isMobileWidth = window.innerWidth < 900;
+        // Layout (which stance positions fit the stage) depends on width;
+        // the flashlight depends on having a mouse/trackpad that can hover
+        const isMobileWidth = window.innerWidth < 1024;
+        const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
         // ---- BALANCED VISUAL MOVEMENT & FRAMING MATRIX ----
         // 1. Stance 0 now drops 28px downward to ground the floating legs safely on the floor line!
         // 2. Advanced scaling steps use precise vertical offsets to lower his head as he grows.
-        const STEPS = [
+        const DESKTOP_STEPS = [
           { d: 41, s: 0.65, y: 108  }, // Stance 1: Towery base, now perfectly flush on the line
           { d: 27, s: 0.90, y: 85  }, // Stance 2: Creeps forward, body drops down
           { d: 16, s: 1.25, y: 120  }, // Stance 3: Looming closer
-          { d: 6,  s: 1.68, y: 145 }, // Stance 4: Squatting into frame
-          { d: 0,  s: 2.30, y: 350 }  // Stance 5: 🔴 MAXIMUM JUMP-SCARE SCREEN BURST
+          { d: 6,  s: 1.68, y: 245 }, // Stance 4: Squatting into frame (head lowered for short laptop screens)
+          { d: 0,  s: 2.30, y: 450 }  // Stance 5: 🔴 MAXIMUM JUMP-SCARE SCREEN BURST (head kept low enough to stay on short laptop screens)
         ];
+
+        // Mobile/tablet stage is shorter (280px), so every stance is re-framed to fit it
+        const MOBILE_STEPS = [
+          { d: 41, s: 0.96, y: 53  }, // Stance 1: Larger and closer to the copy above
+          { d: 27, s: 1.20, y: 53  }, // Stance 2
+          { d: 16, s: 1.60, y: 83  }, // Stance 3
+          { d: 6,  s: 2.16, y: 141 }, // Stance 4
+          { d: 0,  s: 2.96, y: 191 }  // Stance 5: Raised so more of him is in frame
+        ];
+
+        const STEPS = isMobileWidth ? MOBILE_STEPS : DESKTOP_STEPS;
         
         let step = 0;
         let alarmInterval = null;
@@ -1437,10 +1660,11 @@
           place();
         }
 
-        // ---- 🔦 METHOD A: RADIAL LIGHT MONITOR (DESKTOP EXCLUSIVE) ----
-        if (!isMobileWidth) {
-          window.addEventListener("pointermove", function(e) {
-            if (step >= STEPS.length - 1) return;
+        // ---- 🔦 METHOD A: RADIAL LIGHT MONITOR (MOUSE / TRACKPAD ONLY) ----
+        if (hasFinePointer) {
+          let cursorX = null, cursorY = null;
+          const checkTorch = function() {
+            if (step >= STEPS.length - 1 || cursorX === null) return;
 
             // Grab the absolute center pixel coordinates of the Watcher mesh
             const watcherBounds = svg.getBoundingClientRect();
@@ -1448,7 +1672,7 @@
             const watcherCenterY = watcherBounds.top + (watcherBounds.height / 2);
 
             // Calculate precise distance from flashlight center cursor to the entity
-            const distanceToMouse = Math.hypot(e.clientX - watcherCenterX, e.clientY - watcherCenterY);
+            const distanceToMouse = Math.hypot(cursorX - watcherCenterX, cursorY - watcherCenterY);
 
             // 📐 THE TOTAL SHADOW VISIBILITY GAP:
             // Match this to your 240px pool, plus 100px of buffer room.
@@ -1466,7 +1690,14 @@
                 advanceWatcherThreat();
               }
             }
-          });
+          };
+          const trackCursor = function(e) { cursorX = e.clientX; cursorY = e.clientY; checkTorch(); };
+          window.addEventListener("pointermove", trackCursor);
+          // A still cursor reports its position on wheel/pointerover, and re-checking on scroll
+          // means scrolling him out of the light counts as looking away
+          window.addEventListener("wheel", trackCursor, { passive: true });
+          document.addEventListener("pointerover", trackCursor);
+          window.addEventListener("scroll", checkTorch, { passive: true });
         }
 
         // ---- 📜 METHOD B: DUAL-TRACKING SCROLL ENFORCER ----
@@ -1475,9 +1706,9 @@
             for (const entry of entries) {
               // If they physically scroll the layout wrapper outside the focus area bounds
               if (!entry.isIntersecting) {
-                // If they are on a laptop and he is currently pinned in your active flashlight beam, 
+                // If they are using a mouse and he is currently pinned in your active flashlight beam, 
                 // do not trigger a blind advance via scroll until they look away!
-                if (!isMobileWidth && wasLitByTorch) continue;
+                if (hasFinePointer && wasLitByTorch) continue;
                 
                 advanceWatcherThreat();
               }
@@ -1498,10 +1729,13 @@
         const cv = document.getElementById("visor-night-shroud");
         const targetSection = document.getElementById("after-dark");
         if (!cv || !targetSection) return;
+        // Touch screens can't steer a flashlight, so the shroud only runs with a mouse/trackpad
+        if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
         const ctx = cv.getContext("2d");
         let W = window.innerWidth, H = window.innerHeight;
         let mouseX = -500, mouseY = -500;
+        let hasPointerPosition = false;
         let trackingActive = false;
         
         // Define the block resolution size (16px per pixel voxel)
@@ -1524,6 +1758,8 @@
             if (!trackingActive) {
               trackingActive = true;
               cv.style.opacity = "1";
+              // Cursor position not known yet (e.g. arrived by keyboard): start the light mid-screen
+              if (!hasPointerPosition) { mouseX = W / 2; mouseY = H / 2; }
             }
           } else {
             if (trackingActive) {
@@ -1588,12 +1824,18 @@
 
 
 
-        // Hook up mouse tracking data parameters
-        window.addEventListener("pointermove", (e) => {
+        // Hook up mouse tracking data parameters.
+        // Scrolling with a still mouse fires no pointermove, but wheel and pointerover
+        // (the element under the cursor changing) still report where the cursor is.
+        function trackPointer(e) {
           mouseX = e.clientX;
           mouseY = e.clientY;
+          hasPointerPosition = true;
           if (trackingActive) renderMatrix();
-        });
+        }
+        window.addEventListener("pointermove", trackPointer);
+        window.addEventListener("wheel", trackPointer, { passive: true });
+        document.addEventListener("pointerover", trackPointer);
 
         window.addEventListener("scroll", evaluateScrollBounds, { passive: true });
         evaluateScrollBounds();
